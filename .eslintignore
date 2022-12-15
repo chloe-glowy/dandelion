@@ -1,0 +1,5 @@
+node_modules
+.expo
+web-build
+server-build
+metro.config.js

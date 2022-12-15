@@ -1,0 +1,71 @@
+name: AWS
+on:
+  push:
+    branches:
+      - latest
+      - stable
+      - latest2
+
+jobs:
+  AWS:
+    runs-on: ubuntu-latest
+    environment: AWS Deploy
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v2
+
+      - name: Setup Node
+        uses: actions/setup-node@v2
+        with:
+          node-version: 14.x
+          cache: yarn
+
+      - name: yarn install
+        run: yarn install
+
+      - name: Install commandline tools
+        run: npm install -g expo-cli sharp-cli
+
+      - name: Create secret environment variables
+        uses: SpicyPizza/create-envfile@v1
+        with:
+          envkey_GRAPHQL_URI: '/graphql'
+          envkey_MONGODB_USER_0_PASSWORD: ${{ secrets.MONGODB_USER_0_PASSWORD }}
+          envkey_MONGODB_DB_NAME: ${{ secrets.MONGODB_DB_NAME }}
+          envkey_SEGMENT_ANALYTICS_WRITE_KEY:
+            ${{ secrets.SEGMENT_ANALYTICS_WRITE_KEY }}
+          envkey_SESSION_SECRET: ${{ secrets.SESSION_SECRET }}
+          envkey_MONGO_AID_REQUEST_INDEX_NAME:
+            ${{ secrets.MONGO_AID_REQUEST_INDEX_NAME }}
+          envkey_SENDGRID_API_KEY: ${{ secrets.SENDGRID_API_KEY }}
+          envkey_NEW_COMMENT_NOTIFICATION_TEMPLATE_ID:
+            ${{ secrets.NEW_COMMENT_NOTIFICATION_TEMPLATE_ID }}
+          envkey_REMINDER_NOTIFICATION_TEMPLATE_ID:
+            ${{ secrets.REMINDER_NOTIFICATION_TEMPLATE_ID }}
+          envkey_PASSWORD_RESET_EMAIL_TEMPLATE_ID:
+            ${{ secrets.PASSWORD_RESET_EMAIL_TEMPLATE_ID }}
+
+      - name: Build Client JavaScript
+        run: npm run build:client
+
+      - name: Build Server JavaScript
+        run: npm run build:server
+
+      - name: Remove dev dependencies
+        run: npm prune --production
+
+      - name: Create deployment package
+        run:
+          zip -r deploy.zip server-build web-build node_modules package.json
+          .env yarn.lock assets
+
+      - name: Deploy to EB
+        uses: einaregilsson/beanstalk-deploy@v19
+        with:
+          aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          application_name: dandelion-aid-app-${{ github.ref_name }}
+          environment_name: dandelion-aid-app-env-${{ github.ref_name }}
+          version_label: ${{ github.ref_name }}.${{ github.sha }}
+          region: us-west-2
+          deployment_package: deploy.zip

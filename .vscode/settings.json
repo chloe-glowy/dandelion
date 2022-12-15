@@ -1,0 +1,26 @@
+{
+  "cSpell.words": [
+    "bugsnag",
+    "callsite",
+    "codegen",
+    "commandline",
+    "Crumbtrails",
+    "envfile",
+    "envkey",
+    "graphiql",
+    "graphqlify",
+    "instanceof",
+    "Interactor",
+    "Interactors",
+    "loggedout",
+    "matchall",
+    "ngrams",
+    "postpublish",
+    "Pressable",
+    "resave",
+    "runserver",
+    "sendgrid",
+    "unnest"
+  ],
+  "python.defaultInterpreterPath": "~/.local/share/virtualenvs/python-xzIMLPv1/bin/python"
+}

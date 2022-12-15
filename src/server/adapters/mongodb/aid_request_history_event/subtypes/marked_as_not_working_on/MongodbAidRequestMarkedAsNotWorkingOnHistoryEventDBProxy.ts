@@ -1,0 +1,6 @@
+import { MongodbAidRequestHistoryEventDBProxy } from 'src/server/adapters/mongodb/aid_request_history_event/db_proxy/MongodbAidRequestHistoryEventDBProxy';
+import { AidRequestMarkedAsNotWorkingOnHistoryEventDBProxy } from 'src/server/entities/public/aid_request_history_event/subtypes/marked_as_not_working_on/AidRequestMarkedAsNotWorkingOnHistoryEventDBProxy';
+
+export class MongodbAidRequestMarkedAsNotWorkingOnHistoryEventDBProxy
+  extends MongodbAidRequestHistoryEventDBProxy
+  implements AidRequestMarkedAsNotWorkingOnHistoryEventDBProxy {}

@@ -1,0 +1,6 @@
+import { MongodbAidRequestHistoryEventDBProxy } from 'src/server/adapters/mongodb/aid_request_history_event/db_proxy/MongodbAidRequestHistoryEventDBProxy';
+import { AidRequestMarkedAsCompletedHistoryEventDBProxy } from 'src/server/entities/public/aid_request_history_event/subtypes/marked_as_completed/AidRequestMarkedAsCompletedHistoryEventDBProxy';
+
+export class MongodbAidRequestMarkedAsCompletedHistoryEventDBProxy
+  extends MongodbAidRequestHistoryEventDBProxy
+  implements AidRequestMarkedAsCompletedHistoryEventDBProxy {}
