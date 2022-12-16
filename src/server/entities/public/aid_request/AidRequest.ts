@@ -4,7 +4,7 @@ import { AidRequestEditImpl } from 'src/server/entities/private/aid_request/muta
 import { AidRequestUndoImpl } from 'src/server/entities/private/aid_request/mutations/undo/AidRequestUndoImpl';
 import { AidRequestCreateArgs } from 'src/server/entities/public/aid_request/mutations/AidRequestCreate';
 import { AidRequestEditResponse } from 'src/server/entities/public/aid_request/mutations/AidRequestEdit';
-import { AidRequestDBGateway } from 'src/server/entities/public/aid_request/plugins/AidRequestDBGateway';
+import { AidRequestDBGatewayPlugin } from 'src/server/entities/public/aid_request/plugins/AidRequestDBGatewayPlugin';
 import { AidRequestDBProxy } from 'src/server/entities/public/aid_request/plugins/interfaces/AidRequestDBProxy';
 import { AidRequestPrivacyPolicy } from 'src/server/entities/public/aid_request/policy/AidRequestPrivacyPolicy';
 import { AidRequestAction } from 'src/server/entities/public/aid_request_action/interface/AidRequestAction';
@@ -14,7 +14,7 @@ import { User } from 'src/server/entities/public/user/User';
 
 export class AidRequest {
   public static async load(cc: CC, id: string): Promise<AidRequest | null> {
-    const dbProxy = await AidRequestDBGateway.get().load(cc, id);
+    const dbProxy = await AidRequestDBGatewayPlugin.get().load(cc, id);
     if (dbProxy == null) {
       return null;
     }

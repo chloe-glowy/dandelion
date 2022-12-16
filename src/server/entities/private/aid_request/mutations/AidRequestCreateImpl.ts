@@ -2,7 +2,7 @@ import { CC } from 'src/server/context_container/public/ContextContainer';
 import { AidRequestCreatePermissionPolicy } from 'src/server/entities/private/aid_request/mutations/AidRequestCreatePermissionPolicy';
 import { AidRequest } from 'src/server/entities/public/aid_request/AidRequest';
 import { AidRequestCreateArgs } from 'src/server/entities/public/aid_request/mutations/AidRequestCreate';
-import { AidRequestDBGateway } from 'src/server/entities/public/aid_request/plugins/AidRequestDBGateway';
+import { AidRequestDBGatewayPlugin } from 'src/server/entities/public/aid_request/plugins/AidRequestDBGatewayPlugin';
 
 export class AidRequestCreateImpl {
   public static async create(
@@ -16,6 +16,6 @@ export class AidRequestCreateImpl {
     if (!hasPermission) {
       throw new Error('You do not have permission to create an aid request');
     }
-    return await AidRequestDBGateway.get().create(cc, args);
+    return await AidRequestDBGatewayPlugin.get().create(cc, args);
   }
 }

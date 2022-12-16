@@ -2,7 +2,7 @@ import { AidRequestDBGatewayType } from 'src/server/entities/public/aid_request/
 
 let PLUGIN: AidRequestDBGatewayType | undefined;
 
-export const AidRequestDBGateway = {
+export const AidRequestDBGatewayPlugin = {
   get(): AidRequestDBGatewayType {
     if (PLUGIN == null) {
       throw new Error('AidRequestDBGateway plugin not set');

@@ -128,6 +128,7 @@ module.exports = {
             // # Not covered
             ['src/client/*', [NO_RESTRICTION]],
             ['src/server/deprecated/*', [NO_RESTRICTION]],
+            ['src/server/tests/*', [NO_RESTRICTION]],
             ['src/server/notifications/*', [NO_RESTRICTION]],
             ['src/server/root/*', [NO_RESTRICTION]],
             ['src/shared/to_clean/*', [NO_RESTRICTION]],
