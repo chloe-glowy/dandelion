@@ -1,7 +1,3 @@
-// eslint-disable-next-line @chloeglowy/restrict-imports/restrict-import-folders
-import { ObjectId } from 'mongodb';
-// eslint-disable-next-line @chloeglowy/restrict-imports/restrict-import-folders
-import { UserModel } from 'src/server/adapters/mongodb/collections/user/UserModel';
 import { CC } from 'src/server/context_container/public/ContextContainer';
 import { AuthenticatedUserID } from 'src/server/entities/public/user/AuthenticatedUserID';
 import { UserDBProxy } from 'src/server/entities/public/user/plugins/interfaces/UserDBProxy';
@@ -9,10 +5,7 @@ import { UserDBGatewayPlugin } from 'src/server/entities/public/user/plugins/Use
 import { User } from 'src/server/entities/public/user/User';
 import { UserPrivacyPolicy } from 'src/server/entities/public/user/UserPrivacyPolicy';
 
-type UserConstructor = (
-  dbProxy: UserDBProxy,
-  expressUser: Express.User,
-) => User;
+type UserConstructor = (dbProxy: UserDBProxy) => User;
 
 export abstract class UserLoader {
   public static async load(
@@ -53,10 +46,9 @@ export abstract class UserLoader {
       return null;
     }
     const dbProxy = await UserDBGatewayPlugin.get().load(id);
-    const expressUser = await UserModel.findById(new ObjectId(id));
-    if (dbProxy == null || expressUser == null) {
+    if (dbProxy == null) {
       return null;
     }
-    return userConstructor(dbProxy, expressUser);
+    return userConstructor(dbProxy);
   }
 }

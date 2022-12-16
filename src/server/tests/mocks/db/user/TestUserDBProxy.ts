@@ -7,42 +7,37 @@ export class TestUserDBProxy implements UserDBProxy {
   public constructor(private readonly row: TestUserInMemoryDatabaseRow) {}
 
   public async getID(): Promise<string> {
-    throw new Error('TestUserDBProxy.getID -- Not yet implemented');
+    return this.row.properties.id;
   }
 
   public async getDisplayName(): Promise<string> {
-    throw new Error('TestUserDBProxy.getDisplayName -- Not yet implemented');
+    return this.row.properties.displayName;
   }
 
   public async getSharingGroupIDs(): Promise<ReadonlyArray<string>> {
-    throw new Error(
-      'TestUserDBProxy.getSharingGroupIDs -- Not yet implemented',
-    );
+    return this.row.properties.sharingGroupIDs;
   }
 
   public async getIsMemberOfSharingGroupID(
-    _sharingGroupID: string,
+    sharingGroupID: string,
   ): Promise<boolean> {
-    throw new Error(
-      'TestUserDBProxy.getIsMemberOfSharingGroupID -- Not yet implemented',
-    );
+    return this.row.properties.sharingGroupIDs.includes(sharingGroupID);
   }
 
   public async getIsMemberOfSharingGroup(
-    _sharingGroup: SharingGroup,
+    sharingGroup: SharingGroup,
   ): Promise<boolean> {
-    throw new Error(
-      'TestUserDBProxy.getIsMemberOfSharingGroup -- Not yet implemented ',
-    );
+    const sharingGroupID = await sharingGroup.getID();
+    return await this.getIsMemberOfSharingGroupID(sharingGroupID);
   }
 
   public async getIsInMultipleSharingGroups(): Promise<boolean> {
-    throw new Error(
-      'TestUserDBProxy.getIsInMultipleSharingGroups -- Not yet implemented',
-    );
+    return this.row.properties.sharingGroupIDs.length > 1;
   }
 
-  public async isSameUser(_other: User): Promise<boolean> {
-    throw new Error('TestUserDBProxy.isSameUser -- Not yet implemented');
+  public async isSameUser(other: User): Promise<boolean> {
+    const otherID = await other.getID();
+    const thisID = await this.getID();
+    return otherID === thisID;
   }
 }

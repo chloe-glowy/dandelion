@@ -1,6 +1,5 @@
 import { CC } from 'src/server/context_container/public/ContextContainer';
 import { Viewer } from 'src/server/entities/domain/viewer/Viewer';
-import { SharingGroup } from 'src/server/entities/public/sharing_group/SharingGroup';
 import { AuthenticatedUserID } from 'src/server/entities/public/user/AuthenticatedUserID';
 import { User } from 'src/server/entities/public/user/User';
 import { ViewerPublic } from 'src/server/entities/public/viewer/ViewerPublic';
@@ -10,7 +9,7 @@ import { TestID } from 'src/server/tests/mocks/TestID';
 
 type Properties = Readonly<{
   displayName: string;
-  sharingGroups: ReadonlyArray<SharingGroup>;
+  sharingGroupIDs: ReadonlyArray<string>;
 }>;
 
 export abstract class TestUser {
@@ -39,6 +38,23 @@ export abstract class TestUser {
       throw new Error('Failed to create viewer');
     }
     return viewer;
+  }
+
+  /**
+   * @deprecated Eventually this should be done via a real controller
+   */
+  public static async addSharingGroupID(
+    cc: CC,
+    user: User,
+    sharingGroupID: string,
+  ): Promise<void> {
+    const userID = await user.getID();
+    const userRow = TestUserInMemoryDatabase.get(userID);
+    if (userRow == null) {
+      throw new Error('Failed to find user');
+    }
+    userRow.properties.sharingGroupIDs =
+      userRow.properties.sharingGroupIDs.concat(sharingGroupID);
   }
 }
 

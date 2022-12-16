@@ -7,11 +7,7 @@ import { UserDBProxy } from 'src/server/entities/public/user/plugins/interfaces/
 
 export class User {
   public static async load(cc: CC, id: string): Promise<User | null> {
-    return await UserLoader.load(
-      cc,
-      id,
-      (dbProxy, expressUser) => new this(cc, dbProxy, expressUser),
-    );
+    return await UserLoader.load(cc, id, (dbProxy) => new this(cc, dbProxy));
   }
 
   public static async loadViewer(
@@ -21,15 +17,13 @@ export class User {
     return await UserLoader.loadViewer(
       cc,
       authenticatedUserID,
-      (dbProxy, expressUser) => new this(cc, dbProxy, expressUser),
+      (dbProxy) => new this(cc, dbProxy),
     );
   }
 
   private constructor(
     public readonly cc: CC,
     private readonly dbProxy: UserDBProxy,
-    /** @deprecated Update callsite to use User class directly */
-    public readonly expressUser: Express.User,
   ) {}
 
   public async getID(): Promise<string> {

@@ -2,7 +2,7 @@ import { AidRequestDBGatewayPlugin } from 'src/server/entities/public/aid_reques
 import { SharingGroupDBGatewayPlugin } from 'src/server/entities/public/sharing_group/plugins/SharingGroupDBLoader';
 import { UserDBGatewayPlugin } from 'src/server/entities/public/user/plugins/UserDBGatewayPlugin';
 import { TestAidRequestDBGateway } from 'src/server/tests/mocks/db/aid_request/TestAidRequestDBGateway';
-import { TestSharingGroupDBGateway } from 'src/server/tests/mocks/db/TestSharingGroupDBGateway';
+import { TestSharingGroupDBGateway } from 'src/server/tests/mocks/db/sharing_group/TestSharingGroupDBGateway';
 import { TestUserDBGateway } from 'src/server/tests/mocks/db/user/TestUserDBGateway';
 
 export function initTestDBPlugins(): void {
