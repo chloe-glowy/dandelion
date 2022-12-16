@@ -1,17 +1,14 @@
-import { AidRequestAction } from 'src/server/entities/public/aid_request_action/interface/AidRequestAction';
-import { SharingGroup } from 'src/server/entities/public/sharing_group/SharingGroup';
-import { User } from 'src/server/entities/public/user/User';
+import { AidRequestHistoryEventDBProxy } from 'src/server/entities/public/aid_request_history_event/plugins/interfaces/AidRequestHistoryEventDBProxy';
 
 export type TestAidRequestInMemoryDatabaseRowProperties = {
   completed: boolean;
-  createdAt: Date;
-  history: ReadonlyArray<AidRequestAction>;
+  history: ReadonlyArray<AidRequestHistoryEventDBProxy>;
   readonly id: string;
-  sharingGroup: SharingGroup;
+  sharingGroupID: string;
   whatIsNeeded: string;
   whoIsItFor: string;
-  whoIsWorkingOnIt: ReadonlyArray<User>;
-  whoRecordedIt: User;
+  whoIsWorkingOnItUserIDs: ReadonlyArray<string>;
+  whoRecordedItUserID: string;
 };
 
 export class TestAidRequestInMemoryDatabaseRow {
