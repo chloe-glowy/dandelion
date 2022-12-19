@@ -1,9 +1,11 @@
 name: Server Application Tests
 
-on: [push, pull_request]
+on:
+  push:
 
 jobs:
   test:
+    name: Server Application Tests Job
     runs-on: ubuntu-latest
 
     steps:
