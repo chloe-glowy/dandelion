@@ -66,7 +66,6 @@ export class MongodbAidRequestCreateImpl {
         return await MongodbAidRequestHistoryEventObjectConverter.create(
           cc,
           historyObject,
-          whoRecordedItObject,
         );
       }),
     );

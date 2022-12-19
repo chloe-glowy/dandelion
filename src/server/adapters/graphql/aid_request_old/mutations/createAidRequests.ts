@@ -98,7 +98,7 @@ async function createAidRequestsResolver(
         whatIsNeeded: aidRequest.whatIsNeeded,
         whoIsItFor: aidRequest.whoIsItFor,
       },
-      user: user.expressUser,
+      user: req.user ?? null,
     });
   });
   return {

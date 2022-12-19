@@ -1,0 +1,25 @@
+name: Server Application Tests
+
+on:
+  push:
+
+jobs:
+  test:
+    name: Server Application Tests Job
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v2
+
+      - name: Setup Node
+        uses: actions/setup-node@v2
+        with:
+          node-version: 14.x
+          cache: yarn
+
+      - name: yarn install
+        run: yarn install
+
+      - name: Jest
+        run: yarn run test-server-application

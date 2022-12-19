@@ -2,21 +2,18 @@ import { ObjectId } from 'mongodb';
 import { MongodbAidRequestHistoryEvent } from 'src/server/adapters/mongodb/aid_request/model/MongodbAidRequestModelTypes';
 import { MongodbAidRequestActionFactory } from 'src/server/adapters/mongodb/aid_request_history_event/unsaved/MongodbAidRequestActionFactory';
 import { CC } from 'src/server/context_container/public/ContextContainer';
-import { AidRequestAction } from 'src/server/entities/public/aid_request_action/interface/AidRequestAction';
-import { User } from 'src/server/entities/public/user/User';
+import { AidRequestActionWithContext } from 'src/server/entities/public/aid_request_action_with_context/AidRequestActionWithContext';
 
 export abstract class MongodbAidRequestHistoryEventObjectConverter {
   public static async create(
     cc: CC,
-    action: AidRequestAction,
-    whoRecordedIt: User,
+    { action, actorID, timestamp }: AidRequestActionWithContext,
   ): Promise<MongodbAidRequestHistoryEvent> {
     const mongodbHistoryEvent = await MongodbAidRequestActionFactory.create(
       cc,
       action,
     );
-    const timestamp = new Date();
-    const actor = new ObjectId(await whoRecordedIt.getID());
+    const actor = new ObjectId(actorID);
 
     const [mongodbAction, event, eventSpecificData, newValue, oldValue] =
       await Promise.all([

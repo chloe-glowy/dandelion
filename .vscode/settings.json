@@ -1,5 +1,6 @@
 {
   "cSpell.words": [
+    "arity",
     "bugsnag",
     "callsite",
     "codegen",
@@ -12,6 +13,8 @@
     "instanceof",
     "Interactor",
     "Interactors",
+    "isequal",
+    "Keeley",
     "loggedout",
     "matchall",
     "ngrams",
