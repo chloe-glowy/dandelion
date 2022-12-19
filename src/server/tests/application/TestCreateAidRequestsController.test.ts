@@ -67,4 +67,13 @@ describe('CreateAidRequestsController', () => {
     }
     expect(ex?.message).toMatch(/SharingGroup with id .+ not found/);
   });
+
+  it('fails if the user is not a member of the sharing group', async () => {
+    // TODO -- Create user A in sharing group X and user B in sharing group Y.
+    // User B should not be able to create an aid request in sharing group X.
+
+    // Also, User B should not even be able to *see* aid requests in sharing group X.
+    // But that should be tested in a different test file.
+    expect(false).toBe(true);
+  });
 });
