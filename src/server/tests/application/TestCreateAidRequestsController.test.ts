@@ -1,26 +1,23 @@
 import { CreateAidRequestsController } from 'src/server/controllers/create_aid_requests/CreateAidRequestsController';
-import { CreateAidRequestsControllerResult } from 'src/server/controllers/create_aid_requests/types/CreateAidRequestsControllerTypes';
 import { TestEnvironment } from 'src/server/tests/application/mocks/env/TestEnvironment';
 
-async function exec(): Promise<CreateAidRequestsControllerResult> {
-  return await TestEnvironment.withNewUserAsViewer(
-    {
-      displayNameForUser: 'Veronica',
-      nameOfFirstSharingGroupForUser: 'My Sharing Group',
-    },
-    async ({ cc, sharingGroupNameToID }) => {
-      return await CreateAidRequestsController.execute(cc, {
-        sharingGroupID: sharingGroupNameToID('My Sharing Group'),
-        whatIsNeeded: ['a tomato'],
-        whoIsItFor: ['Keeley'],
-      });
-    },
-  );
-}
-
 describe('CreateAidRequestsController', () => {
-  it('gets who recorded it', async () => {
-    const [aidRequest] = (await exec()).aidRequests;
+  it('provides information about a newly created request', async () => {
+    const [aidRequest] = (
+      await TestEnvironment.withNewUserAsViewer(
+        {
+          displayNameForUser: 'Veronica',
+          nameOfFirstSharingGroupForUser: 'My Sharing Group',
+        },
+        async ({ cc, sharingGroupNameToID }) => {
+          return await CreateAidRequestsController.execute(cc, {
+            sharingGroupID: sharingGroupNameToID('My Sharing Group'),
+            whatIsNeeded: ['a tomato'],
+            whoIsItFor: ['Keeley'],
+          });
+        },
+      )
+    ).aidRequests;
     const userPresenter = await aidRequest.getWhoRecordedIt();
     expect(userPresenter).not.toBeNull();
     if (userPresenter == null) {
@@ -28,16 +25,10 @@ describe('CreateAidRequestsController', () => {
     }
     const displayName = await userPresenter.getDisplayName();
     expect(displayName).toBe('Veronica');
-  });
 
-  it('gets what is needed', async () => {
-    const [aidRequest] = (await exec()).aidRequests;
     const whatIsNeeded = await aidRequest.getWhatIsNeeded();
     expect(whatIsNeeded).toBe('a tomato');
-  });
 
-  it('gets who is it for', async () => {
-    const [aidRequest] = (await exec()).aidRequests;
     const whoIsItFor = await aidRequest.getWhoIsItFor();
     expect(whoIsItFor).toBe('Keeley');
   });
