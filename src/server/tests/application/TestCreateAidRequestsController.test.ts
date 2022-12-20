@@ -1,21 +1,21 @@
 import { CreateAidRequestsController } from 'src/server/controllers/create_aid_requests/CreateAidRequestsController';
 import { CreateAidRequestsControllerResult } from 'src/server/controllers/create_aid_requests/types/CreateAidRequestsControllerTypes';
 import { TestEnvironment } from 'src/server/tests/application/mocks/env/TestEnvironment';
-import { initTestPlugins } from 'src/server/tests/application/mocks/initTestPlugins';
 
 async function exec(): Promise<CreateAidRequestsControllerResult> {
-  initTestPlugins();
-  const { cc, viewersFirstSharingGroupID: sharingGroupID } =
-    await TestEnvironment.init({
-      viewerDisplayName: 'Veronica',
-      viewersSoleSharingGroupName: 'My Sharing Group',
-    });
-
-  return await CreateAidRequestsController.execute(cc, {
-    sharingGroupID,
-    whatIsNeeded: ['a tomato'],
-    whoIsItFor: ['Keeley'],
-  });
+  return await TestEnvironment.withNewUserAsViewer(
+    {
+      displayNameForUser: 'Veronica',
+      nameOfFirstSharingGroupForUser: 'My Sharing Group',
+    },
+    async ({ cc, sharingGroupNameToID }) => {
+      return await CreateAidRequestsController.execute(cc, {
+        sharingGroupID: sharingGroupNameToID('My Sharing Group'),
+        whatIsNeeded: ['a tomato'],
+        whoIsItFor: ['Keeley'],
+      });
+    },
+  );
 }
 
 describe('CreateAidRequestsController', () => {
@@ -43,37 +43,41 @@ describe('CreateAidRequestsController', () => {
   });
 
   it('fails if the sharing group does not exist', async () => {
-    initTestPlugins();
-    const { cc, viewersFirstSharingGroupID: sharingGroupID } =
-      await TestEnvironment.init({
-        viewerDisplayName: 'Veronica',
-        viewersSoleSharingGroupName: 'My Sharing Group',
-      });
-    let ex: null | Error = null;
-    try {
-      await CreateAidRequestsController.execute(cc, {
-        sharingGroupID: sharingGroupID + '-not-real',
-        whatIsNeeded: ['a tomato'],
-        whoIsItFor: ['Keeley'],
-      });
-    } catch (e) {
-      if (e instanceof Error) {
-        ex = e;
-      }
+    const exception: null | Error = await TestEnvironment.withNewUserAsViewer(
+      {
+        displayNameForUser: 'Veronica',
+        nameOfFirstSharingGroupForUser: 'My Sharing Group',
+      },
+      async ({ cc, sharingGroupNameToID }) => {
+        let ex: null | Error = null;
+        try {
+          await CreateAidRequestsController.execute(cc, {
+            sharingGroupID:
+              sharingGroupNameToID('My Sharing Group') + '-not-real',
+            whatIsNeeded: ['a tomato'],
+            whoIsItFor: ['Keeley'],
+          });
+        } catch (e) {
+          if (e instanceof Error) {
+            ex = e;
+          }
+        }
+        return ex;
+      },
+    );
+    expect(exception).not.toBeNull();
+    if (exception == null) {
+      throw new Error('Expected exception to be thrown');
     }
-    expect(ex).not.toBeNull();
-    if (ex == null) {
-      throw new Error('ex is null');
-    }
-    expect(ex?.message).toMatch(/SharingGroup with id .+ not found/);
+    expect(exception?.message).toMatch(/SharingGroup with id .+ not found/);
   });
 
-  it('fails if the user is not a member of the sharing group', async () => {
-    // TODO -- Create user A in sharing group X and user B in sharing group Y.
-    // User B should not be able to create an aid request in sharing group X.
+  // it('fails if the user is not a member of the sharing group', async () => {
+  //   // TODO -- Create user A in sharing group X and user B in sharing group Y.
+  //   // User B should not be able to create an aid request in sharing group X.
 
-    // Also, User B should not even be able to *see* aid requests in sharing group X.
-    // But that should be tested in a different test file.
-    expect(false).toBe(true);
-  });
+  //   // Also, User B should not even be able to *see* aid requests in sharing group X.
+  //   // But that should be tested in a different test file.
+  //   expect(false).toBe(true);
+  // });
 });

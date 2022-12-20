@@ -9,10 +9,13 @@ export class SharingGroupPresenter {
     const sharingGroup = await SharingGroup.load(cc, id);
     return sharingGroup == null
       ? null
-      : new SharingGroupPresenter(sharingGroup);
+      : new SharingGroupPresenter(cc, sharingGroup);
   }
 
-  constructor(private sharingGroup: SharingGroup) {}
+  constructor(
+    private readonly cc: CC,
+    private readonly sharingGroup: SharingGroup,
+  ) {}
 
   public async getID(): Promise<string> {
     return await this.sharingGroup.getID();

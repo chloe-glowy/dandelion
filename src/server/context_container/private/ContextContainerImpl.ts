@@ -4,7 +4,6 @@ import {
   ContextModule,
   ContextModuleClass,
   ProofOfBeingCalledByContextContainer,
-  TPluginImplementation,
 } from 'src/server/context_container/public/ContextContainer';
 
 export class ContextContainerImpl implements ContextContainer {
@@ -16,20 +15,22 @@ export class ContextContainerImpl implements ContextContainer {
 
   public constructor(private sentinel: ProofOfBeingCalledByContextContainer) {}
 
-  setPlugin<TPlugin extends TPluginImplementation>(
+  setPlugin<TPlugin>(
     pluginDispatcher: CCPluginDispatcher<TPlugin>,
     pluginImplementation: TPlugin,
   ): void {
-    pluginDispatcher;
-    pluginImplementation;
-    throw new Error('Method not implemented.');
+    if (this.plugins.has(pluginDispatcher)) {
+      throw new Error('Plugin already set');
+    }
+    this.plugins.set(pluginDispatcher, pluginImplementation);
   }
 
-  getPlugin<TPlugin extends TPluginImplementation>(
-    pluginDispatcher: CCPluginDispatcher<TPlugin>,
-  ): TPlugin {
-    pluginDispatcher;
-    throw new Error('Method not implemented.');
+  getPlugin<TPlugin>(pluginDispatcher: CCPluginDispatcher<TPlugin>): TPlugin {
+    const plugin = this.plugins.get(pluginDispatcher);
+    if (plugin == null) {
+      throw new Error('Plugin not set');
+    }
+    return plugin;
   }
 
   get<TContextModule extends ContextModule>(

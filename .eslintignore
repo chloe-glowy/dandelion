@@ -3,3 +3,4 @@ node_modules
 web-build
 server-build
 metro.config.js
+__generated__

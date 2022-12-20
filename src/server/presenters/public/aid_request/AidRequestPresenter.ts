@@ -68,7 +68,7 @@ export class AidRequestPresenter {
     const sharingGroup = await this.aidRequest.getSharingGroup();
     return sharingGroup == null
       ? null
-      : new SharingGroupPresenter(sharingGroup);
+      : new SharingGroupPresenter(this.cc, sharingGroup);
   }
 
   public async getStatusSummary(): Promise<AidRequestStatusSummaryPresenter> {
