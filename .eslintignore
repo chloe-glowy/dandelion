@@ -4,3 +4,5 @@ web-build
 server-build
 metro.config.js
 __generated__
+babel.config.js
+jest.config.js
