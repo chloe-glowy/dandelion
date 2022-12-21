@@ -1,4 +1,5 @@
 import { CC } from 'src/server/context_container/public/ContextContainer';
+import { UnableToLoadEntityError } from 'src/server/entities/public/errors/UnableToLoadEntityError';
 import { SharingGroupCreateArgs } from 'src/server/entities/public/sharing_group/mutations/SharingGroupCreate';
 import { SharingGroupDBGatewayType } from 'src/server/entities/public/sharing_group/plugins/interfaces/SharingGroupDBGatewayType';
 import { SharingGroupDBProxy } from 'src/server/entities/public/sharing_group/plugins/interfaces/SharingGroupDBProxy';
@@ -15,7 +16,7 @@ export class TestSharingGroupDBGateway implements SharingGroupDBGatewayType {
     const testSharingGroupInMemoryDatabaseRow =
       TestSharingGroupInMemoryDatabase.get(id);
     if (testSharingGroupInMemoryDatabaseRow == null) {
-      throw new Error(`SharingGroup with id ${id} not found`);
+      throw new UnableToLoadEntityError('SharingGroup', id);
     }
     return new TestSharingGroupDBProxy(cc, testSharingGroupInMemoryDatabaseRow);
   }

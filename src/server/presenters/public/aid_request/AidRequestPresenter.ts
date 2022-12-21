@@ -120,11 +120,11 @@ export class AidRequestPresenter {
 
   public async getWhoIsWorkingOnIt(): Promise<ReadonlyArray<UserPresenter>> {
     const users = await this.aidRequest.getWhoIsWorkingOnIt();
-    return users.map((user) => new UserPresenter(user));
+    return users.map((user) => new UserPresenter(user.cc, user));
   }
 
   public async getWhoRecordedIt(): Promise<UserPresenter | null> {
     const user = await this.aidRequest.getWhoRecordedIt();
-    return user == null ? null : new UserPresenter(user);
+    return user == null ? null : new UserPresenter(user.cc, user);
   }
 }

@@ -15,7 +15,7 @@ export class SharingGroupCreateImpl {
       args,
     );
     if (!hasPermission) {
-      throw new Error('You do not have permission to create an aid request');
+      throw new Error('You do not have permission to create a sharing group');
     }
     const creator = Viewer.getUser(cc);
     if (creator == null) {

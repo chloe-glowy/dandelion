@@ -12,6 +12,6 @@ export class AidRequestStatusSummaryPresenter {
   }
 
   public async getUsers(): Promise<ReadonlyArray<UserPresenter>> {
-    return this.users.map((user) => new UserPresenter(user));
+    return this.users.map((user) => new UserPresenter(user.cc, user));
   }
 }
