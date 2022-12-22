@@ -11,7 +11,7 @@ export abstract class AidRequestHistoryEventPresenter {
 
   public async getActor(): Promise<UserPresenter | null> {
     const user = await this.event.getActor();
-    return user == null ? null : new UserPresenter(user);
+    return user == null ? null : new UserPresenter(this.event.cc, user);
   }
 
   public async getWhenDidItHappenText(): Promise<string> {

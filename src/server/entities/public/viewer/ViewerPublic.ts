@@ -20,6 +20,10 @@ export abstract class ViewerPublic {
     cc.get(VC).setViewerContext(vc);
   }
 
+  public static async unsetViewerContext(cc: CC): Promise<void> {
+    cc.get(VC).unsetViewerContext();
+  }
+
   public static isLoggedIn(cc: CC): boolean {
     return cc.get(VC).vc.user != null;
   }

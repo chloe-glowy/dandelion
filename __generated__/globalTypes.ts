@@ -8,34 +8,34 @@
 //==============================================================
 
 export enum AidRequestHistoryEventType {
-  ChangedWhatIsNeeded = "ChangedWhatIsNeeded",
-  ChangedWhoIsItFor = "ChangedWhoIsItFor",
-  Comment = "Comment",
-  Completed = "Completed",
-  Created = "Created",
-  Deleted = "Deleted",
-  WorkingOn = "WorkingOn",
+  ChangedWhatIsNeeded = 'ChangedWhatIsNeeded',
+  ChangedWhoIsItFor = 'ChangedWhoIsItFor',
+  Comment = 'Comment',
+  Completed = 'Completed',
+  Created = 'Created',
+  Deleted = 'Deleted',
+  WorkingOn = 'WorkingOn',
 }
 
 export enum AidRequestUpdateActionType {
-  Add = "Add",
-  Remove = "Remove",
+  Add = 'Add',
+  Remove = 'Remove',
 }
 
 export enum NotifiableEventOnAidRequest {
-  Any = "Any",
-  NewComment = "NewComment",
-  Reminder = "Reminder",
-  YouWereMentionedInAComment = "YouWereMentionedInAComment",
+  Any = 'Any',
+  NewComment = 'NewComment',
+  Reminder = 'Reminder',
+  YouWereMentionedInAComment = 'YouWereMentionedInAComment',
 }
 
 export enum NotificationMethod {
-  Email = "Email",
+  Email = 'Email',
 }
 
 export enum SubscribeOrUnsubscribe {
-  Subscribe = "Subscribe",
-  Unsubscribe = "Unsubscribe",
+  Subscribe = 'Subscribe',
+  Unsubscribe = 'Unsubscribe',
 }
 
 export interface AidRequestActionInputInput {

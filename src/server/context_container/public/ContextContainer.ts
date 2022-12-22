@@ -8,12 +8,8 @@ export interface IContextContainerFactory {
 export const ContextContainerFactory: IContextContainerFactory =
   ContextContainerFactoryImpl;
 
-export interface TPluginImplementation {
-  doNothing(): void;
-}
-
-export interface CCPluginDispatcher<TPlugin extends TPluginImplementation> {
-  create(): TPlugin;
+export interface CCPluginDispatcher<TPlugin> {
+  create(cc: ContextContainer): TPlugin;
 }
 
 export class ContextModule {
@@ -44,13 +40,11 @@ export type ContextModuleClass<T extends ContextModule> = new (
 ) => T;
 
 export interface ContextContainer {
-  setPlugin<TPlugin extends TPluginImplementation>(
+  setPlugin<TPlugin>(
     pluginDispatcher: CCPluginDispatcher<TPlugin>,
     pluginImplementation: TPlugin,
   ): void;
-  getPlugin<TPlugin extends TPluginImplementation>(
-    pluginDispatcher: CCPluginDispatcher<TPlugin>,
-  ): TPlugin;
+  getPlugin<TPlugin>(pluginDispatcher: CCPluginDispatcher<TPlugin>): TPlugin;
   get<TContextModule extends ContextModule>(
     contextModuleClass: ContextModuleClass<TContextModule>,
   ): TContextModule;

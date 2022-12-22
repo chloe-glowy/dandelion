@@ -11,6 +11,7 @@
     "web": "expo start --web",
     "eject": "expo eject",
     "test-server-application": "npx jest src/server/tests/application",
+    "test-server-application-with-coverage": "npx jest src/server/tests/application --collect-coverage",
     "prettier": "prettier",
     "eslint": "eslint",
     "build:client": "expo export:web",
@@ -34,14 +35,6 @@
     "scripts:migrate-sharing-group-from-crew:test:live": "npm run build:server && IS_DRY_RUN=\"False\" MONGO_AID_REQUEST_INDEX_NAME=\"aid-request-test\" MONGODB_DB_NAME=\"AidApp-Test\" node server-build/server/scripts/migrate-sharing-group-from-crew/migrate-sharing-group-from-crew.js",
     "scripts:migrate-sharing-group-from-crew:prod:dry": "npm run build:server && IS_DRY_RUN=\"True\" MONGO_AID_REQUEST_INDEX_NAME=\"aid-requests\" MONGODB_DB_NAME=\"AidApp\" node server-build/server/scripts/migrate-sharing-group-from-crew/migrate-sharing-group-from-crew.js",
     "scripts:migrate-sharing-group-from-crew:prod:live": "npm run build:server && IS_DRY_RUN=\"False\" MONGO_AID_REQUEST_INDEX_NAME=\"aid-requests\" MONGODB_DB_NAME=\"AidApp\" node server-build/server/scripts/migrate-sharing-group-from-crew/migrate-sharing-group-from-crew.js"
-  },
-  "jest": {
-    "verbose": true,
-    "rootDir": "",
-    "modulePaths": [
-      "<rootDir>",
-      "<rootDir>/node_modules"
-    ]
   },
   "dependencies": {
     "@apollo/client": ">=3.5.6",
@@ -116,6 +109,7 @@
     "@chloeglowy/eslint-plugin-no-set-timeout": "^1.0.2",
     "@chloeglowy/eslint-plugin-restrict-imports": "^1.0.1",
     "@expo/webpack-config": "0.17.3",
+    "@jest/globals": "^27.0.0",
     "@types/analytics-node": ">=3.1.7",
     "@types/connect-ensure-login": ">=0.1.7",
     "@types/cookie-parser": ">=1.4.2",
@@ -127,7 +121,7 @@
     "@types/express-session": ">=1.17.4",
     "@types/http-errors": ">=1.8.1",
     "@types/http-proxy": ">=1.17.8",
-    "@types/jest": "^27.4.1",
+    "@types/jest": "^27.0.0",
     "@types/lodash": ">=4.14.178",
     "@types/lodash.isequal": "^4.5.6",
     "@types/morgan": ">=1.9.3",
@@ -147,7 +141,7 @@
     "eslint-plugin-react": ">=7.27.1",
     "eslint-plugin-sort-keys-fix": ">=1.1.2",
     "expo-dev-menu-interface": ">=0.4.2",
-    "jest": "^29.3.1",
+    "jest": "^27.0.0",
     "jest-expo": "47.0.1",
     "prettier": ">=2.4.1",
     "ts-jest": "^27.1.3",

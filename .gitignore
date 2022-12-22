@@ -14,6 +14,7 @@ keys/
 npm-debug.*
 server-build/
 web-build/
+coverage/
 
 ios
 android

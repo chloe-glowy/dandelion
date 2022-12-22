@@ -23,3 +23,6 @@ jobs:
 
       - name: Jest
         run: yarn run test-server-application
+
+      - name: Coverage
+        run: yarn run test-server-application-with-coverage

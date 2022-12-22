@@ -1,8 +1,10 @@
 import { CC } from 'src/server/context_container/public/ContextContainer';
+import { UserCreateImpl } from 'src/server/entities/private/user/mutations/create/UserCreateImpl';
 import { UserLoader } from 'src/server/entities/private/user/UserLoader';
 import { VC } from 'src/server/entities/private/vc/ViewerContext';
 import { SharingGroup } from 'src/server/entities/public/sharing_group/SharingGroup';
 import { AuthenticatedUserID } from 'src/server/entities/public/user/AuthenticatedUserID';
+import { UserCreateArgs } from 'src/server/entities/public/user/mutations/UserCreate';
 import { UserDBProxy } from 'src/server/entities/public/user/plugins/interfaces/UserDBProxy';
 
 export class User {
@@ -19,6 +21,10 @@ export class User {
       authenticatedUserID,
       (dbProxy) => new this(cc, dbProxy),
     );
+  }
+
+  public static async create(cc: CC, args: UserCreateArgs): Promise<User> {
+    return await UserCreateImpl.create(cc, args);
   }
 
   private constructor(

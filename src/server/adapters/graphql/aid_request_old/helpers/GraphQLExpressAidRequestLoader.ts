@@ -1,7 +1,5 @@
-// eslint-disable-next-line @chloeglowy/restrict-imports/restrict-import-folders
 import { AidRequest } from 'src/server/entities/public/aid_request/AidRequest';
-// eslint-disable-next-line @chloeglowy/restrict-imports/restrict-import-folders
-// eslint-disable-next-line @chloeglowy/restrict-imports/restrict-import-folders
+
 import { ViewerPublic } from 'src/server/entities/public/viewer/ViewerPublic';
 
 /**

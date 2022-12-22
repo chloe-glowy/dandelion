@@ -9,6 +9,7 @@ export interface ViewerContext {
 
 export class VC extends ContextModule {
   private vc_: ViewerContext | undefined;
+  private hasUnset = false;
 
   public get vc(): ViewerContext {
     if (this.vc_ == null) {
@@ -21,7 +22,18 @@ export class VC extends ContextModule {
     if (this.vc_ != null) {
       throw new Error('Attempted to set viewer context twice');
     }
+    if (this.hasUnset) {
+      throw new Error('Attempted to set viewer context after unsetting');
+    }
     this.vc_ = vc;
+  }
+
+  public unsetViewerContext(): void {
+    if (this.vc_ == null) {
+      throw new Error('Attempted to unset viewer context twice');
+    }
+    this.hasUnset = true;
+    this.vc_ = undefined;
   }
 }
 

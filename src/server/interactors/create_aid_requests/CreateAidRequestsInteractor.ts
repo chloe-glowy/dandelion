@@ -29,10 +29,10 @@ export abstract class CreateAidRequestsInteractor {
       createdAt,
     );
 
-    const sharingGroup = await SharingGroup.load(cc, args.sharingGroupID);
-    if (sharingGroup == null) {
-      throw new Error('Sharing group not found');
-    }
+    const sharingGroup = await SharingGroup.loadOrThrow(
+      cc,
+      args.sharingGroupID,
+    );
 
     const aidRequests = await Promise.all(
       flatten(
