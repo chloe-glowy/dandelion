@@ -10,10 +10,10 @@ import { TestUserInMemoryDatabaseRow } from 'src/server/tests/application/mocks/
 import { TestID } from 'src/server/tests/application/mocks/TestID';
 
 export class TestUserDBGateway implements UserDBGatewayType {
-  async load(id: string): Promise<UserDBProxy> {
+  async load(id: string): Promise<UserDBProxy | null> {
     const testUserInMemoryDatabaseRow = TestUserInMemoryDatabase.get(id);
     if (testUserInMemoryDatabaseRow == null) {
-      throw new Error(`User with id ${id} not found`);
+      return null;
     }
     return new TestUserDBProxy(testUserInMemoryDatabaseRow);
   }

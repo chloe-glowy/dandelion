@@ -23,6 +23,7 @@
     "resave",
     "runserver",
     "sendgrid",
+    "themself",
     "unnest"
   ],
   "python.defaultInterpreterPath": "~/.local/share/virtualenvs/python-xzIMLPv1/bin/python"

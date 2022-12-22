@@ -9,6 +9,11 @@ export const UserPrivacyPolicy = {
     if (viewer == null) {
       return vc.isSystem;
     } else {
+      if (await viewer.isSameUser(user)) {
+        // The viewer can always see themself.
+        return true;
+      }
+
       const [viewerSharingGroupIDs, userSharingGroupIDs] = await Promise.all([
         viewer.getSharingGroupIDs(),
         user.getSharingGroupIDs(),

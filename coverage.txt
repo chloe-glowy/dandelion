@@ -1,0 +1,203 @@
+yarn run v1.22.19
+$ npx jest src/server/tests/application --collect-coverage
+------------------------------------------------------------------------------------------|---------|----------|---------|---------|-------------------------
+File                                                                                      | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s       
+------------------------------------------------------------------------------------------|---------|----------|---------|---------|-------------------------
+All files                                                                                 |   50.15 |    16.36 |   36.57 |    50.1 |                         
+ context_container/private                                                                |   83.33 |       75 |   83.33 |   83.33 |                         
+  ContextContainerFactoryImpl.ts                                                          |     100 |      100 |     100 |     100 |                         
+  ContextContainerImpl.ts                                                                 |   76.47 |    66.66 |      75 |   76.47 | 29-33                   
+ context_container/public                                                                 |     100 |      100 |     100 |     100 |                         
+  ContextContainer.ts                                                                     |     100 |      100 |     100 |     100 |                         
+  RequestTime.ts                                                                          |     100 |      100 |     100 |     100 |                         
+ controllers/create_aid_requests                                                          |      75 |       50 |     100 |      75 |                         
+  CreateAidRequestsController.ts                                                          |      75 |       50 |     100 |      75 | 59,73-80                
+ controllers/edit_aid_request                                                             |       0 |      100 |       0 |       0 |                         
+  EditAidRequestController.ts                                                             |       0 |      100 |       0 |       0 | 6-38                    
+ controllers/sharing_group/create                                                         |     100 |      100 |     100 |     100 |                         
+  CreateSharingGroupController.ts                                                         |     100 |      100 |     100 |     100 |                         
+ controllers/sharing_group/get                                                            |     100 |      100 |     100 |     100 |                         
+  GetAllSharingGroupsController.ts                                                        |     100 |      100 |     100 |     100 |                         
+ controllers/undo_aid_request_edit                                                        |       0 |      100 |       0 |       0 |                         
+  UndoAidRequestEditController.ts                                                         |       0 |      100 |       0 |       0 | 6-15                    
+ controllers/user/create                                                                  |     100 |      100 |     100 |     100 |                         
+  CreateUserController.ts                                                                 |     100 |      100 |     100 |     100 |                         
+ entities/domain/viewer                                                                   |     100 |      100 |     100 |     100 |                         
+  Viewer.ts                                                                               |     100 |      100 |     100 |     100 |                         
+ entities/private/aid_request/mutations                                                   |   81.25 |        0 |     100 |   81.25 |                         
+  AidRequestCreateImpl.ts                                                                 |   85.71 |        0 |     100 |   85.71 | 17                      
+  AidRequestCreatePermissionPolicy.ts                                                     |   77.77 |        0 |     100 |   77.77 | 13,16                   
+ entities/private/aid_request/mutations/edit                                              |      30 |        0 |       0 |      30 |                         
+  AidRequestEditImpl.ts                                                                   |      30 |        0 |       0 |      30 | 16-28                   
+ entities/private/aid_request/mutations/edit/permission                                   |      25 |        0 |       0 |      25 |                         
+  AidRequestEditPermissionPolicy.ts                                                       |   26.66 |        0 |       0 |   26.66 | 14-36                   
+  AidRequestEditPermissionPolicyForAction.ts                                              |      20 |      100 |       0 |      20 | 8-11                    
+  AidRequestEditPermissionPolicyForActionFactory.ts                                       |       0 |        0 |       0 |       0 | 3-113                   
+  AidRequestEditPermissionPolicyForHistoryEventFactory.ts                                 |      50 |        0 |       0 |      50 | 32-113                  
+ entities/private/aid_request/mutations/edit/permission/subtypes/changed_what_is_needed   |   66.66 |      100 |       0 |   66.66 |                         
+  AidRequestEditPermissionPolicyForChangedWhatIsNeededAction.ts                           |   66.66 |      100 |       0 |   66.66 | 5                       
+ entities/private/aid_request/mutations/edit/permission/subtypes/changed_who_is_it_for    |   66.66 |      100 |       0 |   66.66 |                         
+  AidRequestEditPermissionPolicyForChangedWhoIsItForAction.ts                             |   66.66 |      100 |       0 |   66.66 | 5                       
+ entities/private/aid_request/mutations/edit/permission/subtypes/comment                  |   66.66 |      100 |       0 |   66.66 |                         
+  AidRequestEditPermissionPolicyForCommentAction.ts                                       |   66.66 |      100 |       0 |   66.66 | 5                       
+ entities/private/aid_request/mutations/edit/permission/subtypes/created                  |   66.66 |      100 |       0 |   66.66 |                         
+  AidRequestEditPermissionPolicyForCreatedAction.ts                                       |   66.66 |      100 |       0 |   66.66 | 5                       
+ entities/private/aid_request/mutations/edit/permission/subtypes/deleted                  |   33.33 |        0 |       0 |   33.33 |                         
+  AidRequestEditPermissionPolicyForDeletedAction.ts                                       |   33.33 |        0 |       0 |   33.33 | 5-9                     
+ entities/private/aid_request/mutations/edit/permission/subtypes/marked_as_completed      |   66.66 |      100 |       0 |   66.66 |                         
+  AidRequestEditPermissionPolicyForMarkedAsCompletedAction.ts                             |   66.66 |      100 |       0 |   66.66 | 5                       
+ entities/private/aid_request/mutations/edit/permission/subtypes/marked_as_not_completed  |   66.66 |      100 |       0 |   66.66 |                         
+  AidRequestEditPermissionPolicyForMarkedAsNotCompletedAction.ts                          |   66.66 |      100 |       0 |   66.66 | 5                       
+ entities/private/aid_request/mutations/edit/permission/subtypes/marked_as_not_working_on |   66.66 |      100 |       0 |   66.66 |                         
+  AidRequestEditPermissionPolicyForMarkedAsNotWorkingOnAction.ts                          |   66.66 |      100 |       0 |   66.66 | 5                       
+ entities/private/aid_request/mutations/edit/permission/subtypes/marked_as_working_on     |   66.66 |      100 |       0 |   66.66 |                         
+  AidRequestEditPermissionPolicyForMarkedAsWorkingOnAction.ts                             |   66.66 |      100 |       0 |   66.66 | 5                       
+ entities/private/aid_request/mutations/undo                                              |      30 |        0 |       0 |      30 |                         
+  AidRequestUndoImpl.ts                                                                   |      30 |        0 |       0 |      30 | 14-26                   
+ entities/private/aid_request/mutations/undo/permission                                   |      15 |        0 |       0 |      15 |                         
+  AidRequestUndoPermissionPolicy.ts                                                       |      15 |        0 |       0 |      15 | 12-36                   
+ entities/private/sharing_group/mutations/create                                          |   81.81 |        0 |     100 |   81.81 |                         
+  SharingGroupCreateImpl.ts                                                               |   81.81 |        0 |     100 |   81.81 | 18,22                   
+ entities/private/sharing_group/mutations/create/permission                               |   77.77 |        0 |     100 |   77.77 |                         
+  SharingGroupCreatePermissionPolicy.ts                                                   |   77.77 |        0 |     100 |   77.77 | 17,20                   
+ entities/private/user                                                                    |     100 |      100 |     100 |     100 |                         
+  UserLoader.ts                                                                           |     100 |      100 |     100 |     100 |                         
+ entities/private/user/mutations/create                                                   |     100 |      100 |     100 |     100 |                         
+  UserCreateImpl.ts                                                                       |     100 |      100 |     100 |     100 |                         
+ entities/private/user/mutations/create/permission                                        |   88.88 |       50 |     100 |   88.88 |                         
+  UserCreatePermissionPolicy.ts                                                           |   88.88 |       50 |     100 |   88.88 | 13                      
+ entities/private/vc                                                                      |   68.96 |        0 |   71.42 |   68.96 |                         
+  ViewerContext.ts                                                                        |   68.96 |        0 |   71.42 |   68.96 | 16,23,26,33,41-45,54,65 
+ entities/private/viewer                                                                  |     100 |      100 |     100 |     100 |                         
+  ViewerImpl.ts                                                                           |     100 |      100 |     100 |     100 |                         
+ entities/public/aid_request                                                              |   57.57 |    33.33 |      35 |   57.57 |                         
+  AidRequest.ts                                                                           |   57.57 |    33.33 |      35 |   57.57 | 19,37-44,65-101         
+ entities/public/aid_request/plugins                                                      |      80 |        0 |     100 |      80 |                         
+  AidRequestDBGatewayPlugin.ts                                                            |      80 |        0 |     100 |      80 | 8                       
+ entities/public/aid_request/policy                                                       |    87.5 |       50 |     100 |    87.5 |                         
+  AidRequestPrivacyPolicy.ts                                                              |    87.5 |       50 |     100 |    87.5 | 10                      
+ entities/public/aid_request_action/interface                                             |      50 |      100 |       0 |      50 |                         
+  AidRequestAction.ts                                                                     |      50 |      100 |       0 |      50 | 5                       
+ entities/public/aid_request_action/subtypes/changed_what_is_needed                       |      40 |      100 |       0 |      40 |                         
+  AidRequestChangedWhatIsNeededAction.ts                                                  |      40 |      100 |       0 |      40 | 5-8                     
+ entities/public/aid_request_action/subtypes/changed_who_is_it_for                        |      40 |      100 |       0 |      40 |                         
+  AidRequestChangedWhoIsItForAction.ts                                                    |      40 |      100 |       0 |      40 | 5-8                     
+ entities/public/aid_request_action/subtypes/comment                                      |      50 |      100 |       0 |      50 |                         
+  AidRequestCommentAction.ts                                                              |      50 |      100 |       0 |      50 | 4-5                     
+ entities/public/aid_request_action/subtypes/created                                      |     100 |      100 |     100 |     100 |                         
+  AidRequestCreatedAction.ts                                                              |     100 |      100 |     100 |     100 |                         
+ entities/public/aid_request_action/subtypes/deleted                                      |     100 |      100 |     100 |     100 |                         
+  AidRequestDeletedAction.ts                                                              |     100 |      100 |     100 |     100 |                         
+ entities/public/aid_request_action/subtypes/marked_as_completed                          |     100 |      100 |     100 |     100 |                         
+  AidRequestMarkedAsCompletedAction.ts                                                    |     100 |      100 |     100 |     100 |                         
+ entities/public/aid_request_action/subtypes/marked_as_not_completed                      |     100 |      100 |     100 |     100 |                         
+  AidRequestMarkedAsNotCompletedAction.ts                                                 |     100 |      100 |     100 |     100 |                         
+ entities/public/aid_request_action/subtypes/marked_as_not_working_on                     |     100 |      100 |     100 |     100 |                         
+  AidRequestMarkedAsNotWorkingOnAction.ts                                                 |     100 |      100 |     100 |     100 |                         
+ entities/public/aid_request_action/subtypes/marked_as_working_on                         |     100 |      100 |     100 |     100 |                         
+  AidRequestMarkedAsWorkingOnAction.ts                                                    |     100 |      100 |     100 |     100 |                         
+ entities/public/aid_request_action_with_context                                          |     100 |      100 |     100 |     100 |                         
+  AidRequestActionWithContext.ts                                                          |     100 |      100 |     100 |     100 |                         
+ entities/public/aid_request_history_event                                                |      25 |      100 |       0 |      25 |                         
+  AidRequestHistoryEvent.ts                                                               |      25 |      100 |       0 |      25 | 10-18                   
+ entities/public/aid_request_history_event/subtypes/changed_what_is_needed                |      25 |      100 |       0 |      25 |                         
+  AidRequestChangedWhatIsNeededHistoryEvent.ts                                            |      25 |      100 |       0 |      25 | 7-22                    
+ entities/public/aid_request_history_event/subtypes/changed_who_is_it_for                 |      25 |      100 |       0 |      25 |                         
+  AidRequestChangedWhoIsItForHistoryEvent.ts                                              |      25 |      100 |       0 |      25 | 7-22                    
+ entities/public/aid_request_history_event/subtypes/comment                               |   33.33 |      100 |       0 |   33.33 |                         
+  AidRequestCommentHistoryEvent.ts                                                        |   33.33 |      100 |       0 |   33.33 | 8-26                    
+ entities/public/aid_request_history_event/subtypes/created                               |   33.33 |      100 |       0 |   33.33 |                         
+  AidRequestCreatedHistoryEvent.ts                                                        |   33.33 |      100 |       0 |   33.33 | 7-14                    
+ entities/public/aid_request_history_event/subtypes/deleted                               |   33.33 |      100 |       0 |   33.33 |                         
+  AidRequestDeletedHistoryEvent.ts                                                        |   33.33 |      100 |       0 |   33.33 | 7-14                    
+ entities/public/aid_request_history_event/subtypes/marked_as_completed                   |   33.33 |      100 |       0 |   33.33 |                         
+  AidRequestMarkedAsCompletedHistoryEvent.ts                                              |   33.33 |      100 |       0 |   33.33 | 7-14                    
+ entities/public/aid_request_history_event/subtypes/marked_as_not_completed               |   33.33 |      100 |       0 |   33.33 |                         
+  AidRequestMarkedAsNotCompletedHistoryEvent.ts                                           |   33.33 |      100 |       0 |   33.33 | 7-14                    
+ entities/public/aid_request_history_event/subtypes/marked_as_not_working_on              |   33.33 |      100 |       0 |   33.33 |                         
+  AidRequestMarkedAsNotWorkingOnHistoryEvent.ts                                           |   33.33 |      100 |       0 |   33.33 | 7-14                    
+ entities/public/aid_request_history_event/subtypes/marked_as_working_on                  |   33.33 |      100 |       0 |   33.33 |                         
+  AidRequestMarkedAsWorkingOnHistoryEvent.ts                                              |   33.33 |      100 |       0 |   33.33 | 7-14                    
+ entities/public/aid_request_history_event/types                                          |       0 |      100 |       0 |       0 |                         
+  AidRequestAction.ts                                                                     |       0 |      100 |       0 |       0 | 5-8                     
+ entities/public/authentication/plugin                                                    |      50 |      100 |       0 |      50 |                         
+  AuthenticationPlugin.ts                                                                 |      50 |      100 |       0 |      50 | 9                       
+ entities/public/errors                                                                   |     100 |      100 |     100 |     100 |                         
+  UnableToLoadEntityError.ts                                                              |     100 |      100 |     100 |     100 |                         
+ entities/public/mentions                                                                 |   42.85 |        0 |       0 |   42.85 |                         
+  UpdateUserSubmittedTextWithMentionsContentsOnRead.ts                                    |   42.85 |        0 |       0 |   42.85 | 7-15                    
+ entities/public/mentions/plugin                                                          |      40 |        0 |      50 |      40 |                         
+  MentionsReplacer.ts                                                                     |      40 |        0 |      50 |      40 | 7-10                    
+ entities/public/sharing_group                                                            |      95 |       75 |     100 |      95 |                         
+  SharingGroup.ts                                                                         |      95 |       75 |     100 |      95 | 13                      
+ entities/public/sharing_group/plugins                                                    |      80 |        0 |     100 |      80 |                         
+  SharingGroupDBLoader.ts                                                                 |      80 |        0 |     100 |      80 | 8                       
+ entities/public/sharing_group/policy                                                     |   85.71 |       50 |     100 |   85.71 |                         
+  SharingGroupPrivacyPolicy.ts                                                            |   85.71 |       50 |     100 |   85.71 | 10                      
+ entities/public/user                                                                     |   94.11 |       75 |     100 |   93.93 |                         
+  User.ts                                                                                 |     100 |      100 |     100 |     100 |                         
+  UserPrivacyPolicy.ts                                                                    |   85.71 |       75 |     100 |   85.71 | 25-26                   
+ entities/public/user/plugins                                                             |      80 |        0 |     100 |      80 |                         
+  UserDBGatewayPlugin.ts                                                                  |      80 |        0 |     100 |      80 | 8                       
+ entities/public/viewer                                                                   |   72.22 |       40 |      60 |   72.22 |                         
+  ViewerPublic.ts                                                                         |   72.22 |       40 |      60 |   72.22 | 28-33,43,46             
+ interactors/create_aid_requests                                                          |   94.73 |        0 |     100 |   94.73 |                         
+  CreateAidRequestsInteractor.ts                                                          |   94.73 |        0 |     100 |   94.73 | 21                      
+ interactors/edit_aid_requests                                                            |       0 |        0 |       0 |       0 |                         
+  EditAidRequestsInteractor.ts                                                            |       0 |        0 |       0 |       0 | 2-26                    
+ interactors/search_aid_requests                                                          |       0 |        0 |       0 |       0 |                         
+  AidRequestSearchInteractor.ts                                                           |       0 |        0 |       0 |       0 | 2-66                    
+ interactors/search_aid_requests/plugin                                                   |       0 |        0 |       0 |       0 |                         
+  AidRequestSearchPlugin.ts                                                               |       0 |        0 |       0 |       0 | 5-13                    
+ interactors/sharing_group/create                                                         |     100 |      100 |     100 |     100 |                         
+  CreateSharingGroupInteractor.ts                                                         |     100 |      100 |     100 |     100 |                         
+ interactors/sharing_group/get                                                            |    90.9 |        0 |     100 |    90.9 |                         
+  GetAllSharingGroupsInteractor.ts                                                        |    90.9 |        0 |     100 |    90.9 | 17                      
+ interactors/undo_aid_request_edit                                                        |       0 |        0 |       0 |       0 |                         
+  UndoAidRequestEditInteractor.ts                                                         |       0 |        0 |       0 |       0 | 2-26                    
+ interactors/user/create                                                                  |     100 |      100 |     100 |     100 |                         
+  CreateUserInteractor.ts                                                                 |     100 |      100 |     100 |     100 |                         
+ interactors/view_aid_request                                                             |   28.12 |        0 |       0 |   29.03 |                         
+  AidRequestViewAvailableActionOptionsUseCase.ts                                          |   34.78 |        0 |       0 |   34.78 | 17-50                   
+  AidRequestViewHistoryOldestToNewestUseCase.ts                                           |   11.11 |      100 |       0 |    12.5 | 8-21                    
+ presenters/private                                                                       |      50 |        0 |       0 |      50 |                         
+  AidRequestHistoryEventFieldNameChangePresenter.ts                                       |      50 |        0 |       0 |      50 | 7                       
+ presenters/public/aid_request                                                            |   31.91 |     9.09 |      20 |   31.11 |                         
+  AidRequestPresenter.ts                                                                  |   31.91 |     9.09 |      20 |   31.11 | 18-19,25-105,122-123    
+ presenters/public/aid_request/edit_summary                                               |       0 |        0 |       0 |       0 |                         
+  EditAidRequestSummarizerFactory.ts                                                      |       0 |        0 |       0 |       0 | 3-25                    
+ presenters/public/aid_request/edit_summary/subtypes                                      |       0 |      100 |       0 |       0 |                         
+  EditAidRequestChangedWhatIsNeededSummarizer.ts                                          |       0 |      100 |       0 |       0 | 3-15                    
+  EditAidRequestChangedWhoIsItForSummarizer.ts                                            |       0 |      100 |       0 |       0 | 3-15                    
+  EditAidRequestCommentSummarizer.ts                                                      |       0 |      100 |       0 |       0 | 5-14                    
+ presenters/public/aid_request_action_option                                              |      50 |        0 |       0 |      50 |                         
+  AidRequestActionOptionPresenterFactory.ts                                               |      50 |        0 |       0 |      50 | 21-32                   
+ presenters/public/aid_request_action_option/subtypes                                     |   33.33 |      100 |       0 |   33.33 |                         
+  AidRequestDeleteActionOptionPresenter.ts                                                |   33.33 |      100 |       0 |   33.33 | 7-10                    
+  AidRequestMarkAsCompleteActionOptionPresenter.ts                                        |   33.33 |      100 |       0 |   33.33 | 7-10                    
+  AidRequestMarkAsIncompleteActionOptionPresenter.ts                                      |   33.33 |      100 |       0 |   33.33 | 7-10                    
+  AidRequestMarkAsViewerNotWorkingOnItActionOptionPresenter.ts                            |   33.33 |      100 |       0 |   33.33 | 7-10                    
+  AidRequestMarkAsViewerWorkingOnItActionOptionPresenter.ts                               |   33.33 |      100 |       0 |   33.33 | 7-10                    
+ presenters/public/aid_request_history_event                                              |   39.28 |        0 |       0 |   39.28 |                         
+  AidRequestHistoryEventPresenter.ts                                                      |   16.66 |        0 |       0 |   16.66 | 9-61                    
+  AidRequestHistoryEventPresenterFactory.ts                                               |      50 |        0 |       0 |      50 | 26-63                   
+ presenters/public/aid_request_history_event/subtypes                                     |   33.89 |      100 |       0 |   33.89 |                         
+  AidRequestChangedWhatIsNeededHistoryEventPresenter.ts                                   |    37.5 |      100 |       0 |    37.5 | 6-23                    
+  AidRequestChangedWhoIsItForHistoryEventPresenter.ts                                     |    37.5 |      100 |       0 |    37.5 | 6-23                    
+  AidRequestCommentHistoryEventPresenter.ts                                               |   28.57 |      100 |       0 |   28.57 | 5-18                    
+  AidRequestCreatedHistoryEventPresenter.ts                                               |   33.33 |      100 |       0 |   33.33 | 5-14                    
+  AidRequestDeletedHistoryEventPresenter.ts                                               |   33.33 |      100 |       0 |   33.33 | 5-14                    
+  AidRequestMarkedAsCompletedHistoryEventPresenter.ts                                     |   33.33 |      100 |       0 |   33.33 | 5-14                    
+  AidRequestMarkedAsNotCompletedHistoryEventPresenter.ts                                  |   33.33 |      100 |       0 |   33.33 | 5-14                    
+  AidRequestMarkedAsNotWorkingOnHistoryEventPresenter.ts                                  |   33.33 |      100 |       0 |   33.33 | 5-14                    
+  AidRequestMarkedAsWorkingOnHistoryEventPresenter.ts                                     |   33.33 |      100 |       0 |   33.33 | 5-14                    
+ presenters/public/aid_request_search                                                     |       0 |      100 |       0 |       0 |                         
+  AidRequestSearchPresenter.ts                                                            |       0 |      100 |       0 |       0 | 2-15                    
+ presenters/public/aid_request_status_summary                                             |   28.57 |      100 |       0 |   33.33 |                         
+  AidRequestStatusSummaryPresenter.ts                                                     |   28.57 |      100 |       0 |   33.33 | 6-15                    
+ presenters/public/sharing_group                                                          |      75 |        0 |      75 |      75 |                         
+  SharingGroupPresenter.ts                                                                |      75 |        0 |      75 |      75 | 9-10                    
+ presenters/public/user                                                                   |   83.33 |      100 |      75 |      80 |                         
+  UserPresenter.ts                                                                        |   83.33 |      100 |      75 |      80 | 16                      
+------------------------------------------------------------------------------------------|---------|----------|---------|---------|-------------------------
+Done in 22.79s.
