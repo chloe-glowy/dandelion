@@ -2,11 +2,14 @@ import { ObjectId } from 'mongodb';
 import type { MongodbSharingGroupType } from 'src/server/adapters/mongodb/sharing_group/model/MongodbSharingGroupModelTypes';
 import nextTestID from 'src/server/to_clean/testing/nextTestID';
 
-jest.mock('src/server/collections/sharing_group/SharingGroupModel', () => ({
-  SharingGroupModel: {
-    findById,
-  },
-}));
+jest.mock(
+  'src/server/adapters/mongodb/sharing_group/model/MongodbSharingGroupModel',
+  () => ({
+    MongodbSharingGroupModel: {
+      findById,
+    },
+  }),
+);
 
 const testSharingGroups: Map<string, MongodbSharingGroupType> = new Map();
 

@@ -25,25 +25,23 @@ module.exports = {
     '@chloeglowy/restrict-imports/restrict-import-folders': [
       'error',
       {
+        ignore: ['*.test.ts', '.eslintrc.js'],
         rules: (() => {
           // Foundation
-          const CC = 'src/server/context_container/public/*';
-          const CC_IMPL = 'src/server/context_container/private/*';
+          const CC = 'src/server/context_container/*';
           const LANGUAGE_UTILS = 'src/shared/language_utils/*';
 
           // # Domain
           // ## Entities
-          const ENTITIES = 'src/server/entities/public/*';
-          const ENTITIES_IMPL = 'src/server/entities/private/*';
-          const ENTITIES_DOMAIN = 'src/server/entities/domain/*';
+          const ENTITIES = 'src/server/entities/*';
+          const ENTITIES_DOMAIN = 'src/server/entities_domain/*';
 
           // ## Interactors ("Use Case Interactors")
           const INTERACTORS = 'src/server/interactors/*';
 
           // Interface Adapters
-          const PRESENTERS = 'src/server/presenters/public/*';
+          const PRESENTERS = 'src/server/presenters/*';
           const PRESENTER_UTILS = 'src/shared/presenter_utils/*';
-          const PRESENTERS_PRIVATE = 'src/server/presenters/private/*';
           const CONTROLLERS = 'src/server/controllers/*';
 
           // Framework Adapters
@@ -60,35 +58,20 @@ module.exports = {
 
           const DEPENDENCY_MAP = [
             // # Foundation
-            [CC, [CC_IMPL]],
-            [CC_IMPL, [CC]],
+            [CC, []],
             [LANGUAGE_UTILS, []],
 
-            // # Domain
-            // ## Entities -- Public API available to everyone
-            [ENTITIES, [CC, ENTITIES_IMPL, ENTITIES_DOMAIN]],
-            // ## Entities Impl -- Private API only available to Entities
-            [ENTITIES_IMPL, [CC, ENTITIES, ENTITIES_DOMAIN]],
-            // ## Entities Domain -- Protected API only available to Entities and Use Cases
-            [ENTITIES_DOMAIN, [CC, ENTITIES, ENTITIES_IMPL]],
+            // # Enterprise / Entities
+            [ENTITIES, [CC, ENTITIES_DOMAIN]],
+
+            // # Application / Use Cases / Interactors
             [INTERACTORS, [CC, LANGUAGE_UTILS, ENTITIES, ENTITIES_DOMAIN]],
 
             // # Interface Adapters
             // ## Presenters
             [
               PRESENTERS,
-              [
-                CC,
-                LANGUAGE_UTILS,
-                ENTITIES,
-                INTERACTORS,
-                PRESENTER_UTILS,
-                PRESENTERS_PRIVATE,
-              ],
-            ],
-            [
-              PRESENTERS_PRIVATE,
-              [LANGUAGE_UTILS, INTERACTORS, PRESENTER_UTILS, PRESENTERS],
+              [CC, LANGUAGE_UTILS, ENTITIES, INTERACTORS, PRESENTER_UTILS],
             ],
 
             // ## Controllers
@@ -128,7 +111,6 @@ module.exports = {
             // # Not covered
             ['src/client/*', [NO_RESTRICTION]],
             ['src/server/deprecated/*', [NO_RESTRICTION]],
-            ['src/server/tests/*', [NO_RESTRICTION]],
             ['src/server/notifications/*', [NO_RESTRICTION]],
             ['src/server/root/*', [NO_RESTRICTION]],
             ['src/shared/to_clean/*', [NO_RESTRICTION]],
@@ -149,6 +131,9 @@ module.exports = {
               'src/shared/presenter_utils/mentions/*',
               ['diff', 'react-native', 'react'],
             ],
+
+            // Tests
+            ['src/server/tests/*', [NO_RESTRICTION]],
           ];
 
           return DEPENDENCY_MAP.map(([importTo, canImportFrom]) => ({

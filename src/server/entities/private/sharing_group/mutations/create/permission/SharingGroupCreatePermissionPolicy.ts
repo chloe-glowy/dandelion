@@ -1,5 +1,5 @@
 import { CC } from 'src/server/context_container/public/ContextContainer';
-import { Viewer } from 'src/server/entities/domain/viewer/Viewer';
+import { Viewer } from 'src/server/entities/entities_domain/viewer/Viewer';
 import { SharingGroupCreateArgs } from 'src/server/entities/public/sharing_group/mutations/SharingGroupCreate';
 
 export class SharingGroupCreatePermissionPolicy {

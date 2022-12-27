@@ -1,11 +1,9 @@
 import { ObjectId } from 'mongodb';
 import getCurrentSettingForNotificationOnAidRequest from 'src/server/adapters/mongodb/collections/aid_request_notification_settings/helpers/getCurrentSettingForNotificationOnAidRequest';
-// eslint-disable-next-line @chloeglowy/restrict-imports/restrict-import-folders
 import createTestAidRequest from 'src/server/to_clean/testing/createTestAidRequest';
-// eslint-disable-next-line @chloeglowy/restrict-imports/restrict-import-folders
 import createTestUser from 'src/server/to_clean/testing/createTestUser';
 
-describe('getCurrentSettingForNotificationOnAidRequest', () => {
+xdescribe('getCurrentSettingForNotificationOnAidRequest', () => {
   const userA = createTestUser();
   const aidRequestA = createTestAidRequest({
     whoRecordedIt: userA._id,

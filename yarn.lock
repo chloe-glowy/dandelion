@@ -1718,10 +1718,10 @@
   resolved "https://registry.yarnpkg.com/@chloeglowy/eslint-plugin-no-set-timeout/-/eslint-plugin-no-set-timeout-1.0.2.tgz#71205a488f2c7816c6161045a68e85f9ac76acda"
   integrity sha512-dYG7xBZqx73ae9DNd78OKP389d7ZBeoviSD0k4yJ6+pxb+J2XyR/QtKj3ZKC+UEfS8zuohw+9mMMmlD8RFmK5g==
 
-"@chloeglowy/eslint-plugin-restrict-imports@^1.0.1":
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/@chloeglowy/eslint-plugin-restrict-imports/-/eslint-plugin-restrict-imports-1.0.1.tgz#736565f752bbf531e1f70a4803d36c0da8060b89"
-  integrity sha512-NYpfZ/UelE1b6se9P+KTOFHKoozKs567NphzWcsKcM36s7ahDuIAxWF84JqreWPGIsbvLh4+yowMYaiwqNElkQ==
+"@chloeglowy/eslint-plugin-restrict-imports@^2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@chloeglowy/eslint-plugin-restrict-imports/-/eslint-plugin-restrict-imports-2.0.0.tgz#318f9f41a0342ebe17e9bdd0c2aba0dcbd5854bd"
+  integrity sha512-f9moXToq0FBCo5vDR0vh8kH/hbQgRc7kv5u7FL15qmdFGMfT55v20liod7km6o2I2qrF+RrPPoUhsJt8POtPew==
 
 "@cnakazawa/watch@^1.0.3":
   version "1.0.4"

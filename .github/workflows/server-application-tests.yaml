@@ -1,11 +1,11 @@
-name: Server Application Tests
+name: Server Tests
 
 on:
   push:
 
 jobs:
   test:
-    name: Server Application Tests Job
+    name: Server Tests Job
     runs-on: ubuntu-latest
 
     steps:
@@ -22,7 +22,7 @@ jobs:
         run: yarn install
 
       - name: Jest
-        run: yarn run test-server-application
+        run: yarn run test-server
 
       - name: Coverage
-        run: yarn run test-server-application-with-coverage
+        run: yarn run test-server-with-coverage

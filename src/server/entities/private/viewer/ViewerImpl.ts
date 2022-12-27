@@ -1,5 +1,5 @@
 import { CC } from 'src/server/context_container/public/ContextContainer';
-import { IViewer } from 'src/server/entities/domain/viewer/Viewer';
+import { IViewer } from 'src/server/entities/entities_domain/viewer/Viewer';
 import { VC } from 'src/server/entities/private/vc/ViewerContext';
 import { User } from 'src/server/entities/public/user/User';
 

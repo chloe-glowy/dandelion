@@ -2,11 +2,14 @@ import type { MongodbAidRequestRecord } from 'src/server/adapters/mongodb/aid_re
 import createTestSharingGroup from 'src/server/to_clean/testing/createTestSharingGroup';
 import nextTestID from 'src/server/to_clean/testing/nextTestID';
 
-jest.mock('src/server/collections/aid_request/AidRequestModel', () => ({
-  AidRequestModel: {
-    findById,
-  },
-}));
+jest.mock(
+  'src/server/adapters/mongodb/aid_request/model/MongodbAidRequestModel',
+  () => ({
+    MongodbAidRequestModel: {
+      findById,
+    },
+  }),
+);
 
 const testAidRequests: Map<string, MongodbAidRequestRecord> = new Map();
 

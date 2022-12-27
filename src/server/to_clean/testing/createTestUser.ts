@@ -1,7 +1,7 @@
 import createTestSharingGroup from 'src/server/to_clean/testing/createTestSharingGroup';
 import nextTestID from 'src/server/to_clean/testing/nextTestID';
 
-jest.mock('src/server/collections/user/UserModel', () => ({
+jest.mock('src/server/adapters/mongodb/collections/user/UserModel', () => ({
   UserModel: {
     findById,
   },

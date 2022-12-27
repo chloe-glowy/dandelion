@@ -1,5 +1,5 @@
 import { CC } from 'src/server/context_container/public/ContextContainer';
-import { Viewer } from 'src/server/entities/domain/viewer/Viewer';
+import { Viewer } from 'src/server/entities/entities_domain/viewer/Viewer';
 import { SharingGroupCreatePermissionPolicy } from 'src/server/entities/private/sharing_group/mutations/create/permission/SharingGroupCreatePermissionPolicy';
 import { SharingGroupCreateArgs } from 'src/server/entities/public/sharing_group/mutations/SharingGroupCreate';
 import { SharingGroupDBGatewayPlugin } from 'src/server/entities/public/sharing_group/plugins/SharingGroupDBLoader';

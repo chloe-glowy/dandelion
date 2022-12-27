@@ -1,5 +1,5 @@
 import { CC } from 'src/server/context_container/public/ContextContainer';
-import { Viewer } from 'src/server/entities/domain/viewer/Viewer';
+import { Viewer } from 'src/server/entities/entities_domain/viewer/Viewer';
 import { AidRequest } from 'src/server/entities/public/aid_request/AidRequest';
 import { AidRequestPrivacyPolicy } from 'src/server/entities/public/aid_request/policy/AidRequestPrivacyPolicy';
 

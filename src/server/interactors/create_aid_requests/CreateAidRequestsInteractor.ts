@@ -1,6 +1,6 @@
 import { CC } from 'src/server/context_container/public/ContextContainer';
 import { RequestTime } from 'src/server/context_container/public/RequestTime';
-import { Viewer } from 'src/server/entities/domain/viewer/Viewer';
+import { Viewer } from 'src/server/entities/entities_domain/viewer/Viewer';
 import { AidRequest } from 'src/server/entities/public/aid_request/AidRequest';
 import { AidRequestCreatedAction } from 'src/server/entities/public/aid_request_action/subtypes/created/AidRequestCreatedAction';
 import { AidRequestActionWithContext } from 'src/server/entities/public/aid_request_action_with_context/AidRequestActionWithContext';

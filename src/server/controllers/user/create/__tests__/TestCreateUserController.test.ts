@@ -1,5 +1,5 @@
 import { CreateUserController } from 'src/server/controllers/user/create/CreateUserController';
-import { Viewer } from 'src/server/entities/domain/viewer/Viewer';
+import { Viewer } from 'src/server/entities/entities_domain/viewer/Viewer';
 import { User } from 'src/server/entities/public/user/User';
 import { TestMain } from 'src/server/tests/application/mocks/main/TestMain';
 
