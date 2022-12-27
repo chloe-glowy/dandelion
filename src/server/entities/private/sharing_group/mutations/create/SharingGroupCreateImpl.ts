@@ -21,10 +21,8 @@ export class SharingGroupCreateImpl {
     if (creator == null) {
       throw new Error('You must be logged in to create a sharing group');
     }
-    return await SharingGroupDBGatewayPlugin.get().createAndAddCreatorAsSoleMember(
+    return await SharingGroupDBGatewayPlugin.getImpl(
       cc,
-      args,
-      creator,
-    );
+    ).createAndAddCreatorAsSoleMember(cc, args, creator);
   }
 }

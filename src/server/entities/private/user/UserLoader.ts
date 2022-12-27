@@ -38,14 +38,14 @@ export abstract class UserLoader {
   }
 
   private static async loadWithoutPrivacyCheck(
-    _cc: CC,
+    cc: CC,
     id: string | null,
     userConstructor: UserConstructor,
   ): Promise<User | null> {
     if (id == null) {
       return null;
     }
-    const dbProxy = await UserDBGatewayPlugin.get().load(id);
+    const dbProxy = await UserDBGatewayPlugin.getImpl(cc).load(id);
     if (dbProxy == null) {
       return null;
     }

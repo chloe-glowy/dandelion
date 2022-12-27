@@ -1,7 +1,8 @@
 import { ContextContainerFactoryImpl } from 'src/server/context_container/private/ContextContainerFactoryImpl';
+import { PluginCollection } from 'src/server/context_container/public/PluginCollection';
 
 export interface IContextContainerFactory {
-  create(): ContextContainer;
+  create(plugins: PluginCollection): ContextContainer;
   assertConstructedByContextContainer(token: number): void;
 }
 
@@ -9,7 +10,7 @@ export const ContextContainerFactory: IContextContainerFactory =
   ContextContainerFactoryImpl;
 
 export interface CCPluginDispatcher<TPlugin> {
-  create(cc: ContextContainer): TPlugin;
+  getImpl(cc: ContextContainer): TPlugin;
 }
 
 export class ContextModule {
@@ -40,10 +41,6 @@ export type ContextModuleClass<T extends ContextModule> = new (
 ) => T;
 
 export interface ContextContainer {
-  setPlugin<TPlugin>(
-    pluginDispatcher: CCPluginDispatcher<TPlugin>,
-    pluginImplementation: TPlugin,
-  ): void;
   getPlugin<TPlugin>(pluginDispatcher: CCPluginDispatcher<TPlugin>): TPlugin;
   get<TContextModule extends ContextModule>(
     contextModuleClass: ContextModuleClass<TContextModule>,

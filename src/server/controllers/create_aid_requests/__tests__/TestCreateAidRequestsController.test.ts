@@ -1,13 +1,68 @@
 import { CreateAidRequestsController } from 'src/server/controllers/create_aid_requests/CreateAidRequestsController';
+import { AidRequestDBGatewayPlugin } from 'src/server/entities/public/aid_request/plugins/AidRequestDBGatewayPlugin';
 import { UnableToLoadEntityError } from 'src/server/entities/public/errors/UnableToLoadEntityError';
-import { TestMain } from 'src/server/tests/application/mocks/main/TestMain';
+import { testCatch } from 'src/server/tests/application/helpers/testCatch';
+import { TestAidRequestDBGateway } from 'src/server/tests/application/mocks/db/aid_request/TestAidRequestDBGateway';
+import { TestEnvironment } from 'src/server/tests/application/mocks/main/TestEnvironment';
 
 describe('CreateAidRequestsController', () => {
-  it('provides information about a newly created request', async () => {
-    await TestMain.withNewUserAsViewer(
+  it('different test environments do not interfere', async () => {
+    const env1 = new TestEnvironment();
+    const env2 = new TestEnvironment();
+    const userIdA = await env1.withNewUserAsViewer(
       {
         displayNameForUser: 'Veronica',
-        nameOfFirstSharingGroupForUser: 'My Sharing Group',
+        namesOfSharingGroupsToCreateForUser: ['My Sharing Group'],
+      },
+      async ({ cc, sharingGroupNameToID, viewerID }) => {
+        await CreateAidRequestsController.execute(cc, {
+          sharingGroupID: sharingGroupNameToID('My Sharing Group'),
+          whatIsNeeded: ['a tomato'],
+          whoIsItFor: ['Keeley'],
+        });
+        return viewerID;
+      },
+    );
+    const userIdB = await env2.withNewUserAsViewer(
+      {
+        displayNameForUser: 'Keeley',
+        namesOfSharingGroupsToCreateForUser: ['My Other Sharing Group'],
+      },
+      async ({ cc, sharingGroupNameToID, viewerID }) => {
+        await CreateAidRequestsController.execute(cc, {
+          sharingGroupID: sharingGroupNameToID('My Other Sharing Group'),
+          whatIsNeeded: ['a potato'],
+          whoIsItFor: ['Veronica'],
+        });
+        return viewerID;
+      },
+    );
+    await env1.withExistingUserAsViewer(userIdA, async ({ cc }) => {
+      const db = (
+        AidRequestDBGatewayPlugin.getImpl(cc) as TestAidRequestDBGateway
+      ).db;
+      expect(db.aidRequests.size).toBe(1);
+      for (const aidRequest of db.aidRequests.values()) {
+        expect(aidRequest.properties.whatIsNeeded).toBe('a tomato');
+      }
+    });
+    await env2.withExistingUserAsViewer(userIdB, async ({ cc }) => {
+      const db = (
+        AidRequestDBGatewayPlugin.getImpl(cc) as TestAidRequestDBGateway
+      ).db;
+      expect(db.aidRequests.size).toBe(1);
+      for (const aidRequest of db.aidRequests.values()) {
+        expect(aidRequest.properties.whatIsNeeded).toBe('a potato');
+      }
+    });
+  });
+
+  it('provides information about a newly created request', async () => {
+    const env = new TestEnvironment();
+    await env.withNewUserAsViewer(
+      {
+        displayNameForUser: 'Veronica',
+        namesOfSharingGroupsToCreateForUser: ['My Sharing Group'],
       },
       async ({ cc, sharingGroupNameToID }) => {
         const [aidRequest] = (
@@ -35,27 +90,22 @@ describe('CreateAidRequestsController', () => {
   });
 
   it('fails if the sharing group does not exist', async () => {
-    const exception: null | Error = await TestMain.withNewUserAsViewer(
+    const env = new TestEnvironment();
+    const exception: null | Error = await env.withNewUserAsViewer(
       {
         displayNameForUser: 'Veronica',
-        nameOfFirstSharingGroupForUser: 'My Sharing Group',
+        namesOfSharingGroupsToCreateForUser: ['My Sharing Group'],
       },
-      async ({ cc, sharingGroupNameToID }) => {
-        let ex: null | Error = null;
-        try {
-          await CreateAidRequestsController.execute(cc, {
-            sharingGroupID:
-              sharingGroupNameToID('My Sharing Group') + '-not-real',
-            whatIsNeeded: ['a tomato'],
-            whoIsItFor: ['Keeley'],
-          });
-        } catch (e) {
-          if (e instanceof Error) {
-            ex = e;
-          }
-        }
-        return ex;
-      },
+      async ({ cc, sharingGroupNameToID }) =>
+        await testCatch(
+          async () =>
+            await CreateAidRequestsController.execute(cc, {
+              sharingGroupID:
+                sharingGroupNameToID('My Sharing Group') + '-not-real',
+              whatIsNeeded: ['a tomato'],
+              whoIsItFor: ['Keeley'],
+            }),
+        ),
     );
     expect(exception).not.toBeNull();
     if (exception == null) {
@@ -68,36 +118,31 @@ describe('CreateAidRequestsController', () => {
   });
 
   it('fails if the user is not a member of the sharing group', async () => {
-    const idForVeronicasSharingGroup = await TestMain.withNewUserAsViewer(
+    const env = new TestEnvironment();
+    const idForVeronicasSharingGroup = await env.withNewUserAsViewer(
       {
         displayNameForUser: 'Veronica',
-        nameOfFirstSharingGroupForUser: "Veronica's Sharing Group",
+        namesOfSharingGroupsToCreateForUser: ["Veronica's Sharing Group"],
       },
       async ({ sharingGroupNameToID }) => {
         return sharingGroupNameToID("Veronica's Sharing Group");
       },
     );
 
-    const exception: null | Error = await TestMain.withNewUserAsViewer(
+    const exception: null | Error = await env.withNewUserAsViewer(
       {
         displayNameForUser: 'Claire',
-        nameOfFirstSharingGroupForUser: "Claire's Sharing Group",
+        namesOfSharingGroupsToCreateForUser: ["Claire's Sharing Group"],
       },
-      async ({ cc }) => {
-        let ex: null | Error = null;
-        try {
-          await CreateAidRequestsController.execute(cc, {
-            sharingGroupID: idForVeronicasSharingGroup,
-            whatIsNeeded: ['two tomatoes'],
-            whoIsItFor: ['Erica'],
-          });
-        } catch (e) {
-          if (e instanceof Error) {
-            ex = e;
-          }
-        }
-        return ex;
-      },
+      async ({ cc }) =>
+        await testCatch(
+          async () =>
+            await CreateAidRequestsController.execute(cc, {
+              sharingGroupID: idForVeronicasSharingGroup,
+              whatIsNeeded: ['two tomatoes'],
+              whoIsItFor: ['Erica'],
+            }),
+        ),
     );
     expect(exception).not.toBeNull();
     if (exception == null) {

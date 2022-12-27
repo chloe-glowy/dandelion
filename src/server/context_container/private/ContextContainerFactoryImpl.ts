@@ -4,6 +4,7 @@ import {
   IContextContainerFactory,
   ProofOfBeingCalledByContextContainer,
 } from 'src/server/context_container/public/ContextContainer';
+import { PluginCollection } from 'src/server/context_container/public/PluginCollection';
 
 const TOKEN = Math.random();
 
@@ -14,9 +15,10 @@ export const ContextContainerFactoryImpl: IContextContainerFactory = {
     }
   },
 
-  create(): ContextContainer {
+  create(plugins: PluginCollection): ContextContainer {
     return new ContextContainerImpl(
       new ProofOfBeingCalledByContextContainer(TOKEN),
+      plugins,
     );
   },
 };

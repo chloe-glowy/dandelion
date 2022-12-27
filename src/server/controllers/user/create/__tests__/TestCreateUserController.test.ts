@@ -1,11 +1,13 @@
 import { CreateUserController } from 'src/server/controllers/user/create/CreateUserController';
 import { Viewer } from 'src/server/entities/entities_domain/viewer/Viewer';
 import { User } from 'src/server/entities/public/user/User';
-import { TestMain } from 'src/server/tests/application/mocks/main/TestMain';
+import { testCatch } from 'src/server/tests/application/helpers/testCatch';
+import { TestEnvironment } from 'src/server/tests/application/mocks/main/TestEnvironment';
 
 describe('CreateUserController', () => {
   it('Creates a user if logged out', async () => {
-    await TestMain.withLoggedOutViewer(async ({ cc }) => {
+    const env = new TestEnvironment();
+    await env.withLoggedOutViewer(async ({ cc }) => {
       const { user } = await CreateUserController.execute(cc, {
         displayName: 'Veronica',
       });
@@ -15,13 +17,14 @@ describe('CreateUserController', () => {
   });
 
   it('Persists the user', async () => {
-    const userID = await TestMain.withLoggedOutViewer(async ({ cc }) => {
+    const env = new TestEnvironment();
+    const userID = await env.withLoggedOutViewer(async ({ cc }) => {
       const { user } = await CreateUserController.execute(cc, {
         displayName: 'Lola',
       });
       return await user.getID();
     });
-    await TestMain.withExistingUserAsViewer(userID, async ({ cc }) => {
+    await env.withExistingUserAsViewer(userID, async ({ cc }) => {
       const user = Viewer.getUser(cc);
       if (user == null) {
         throw new Error('User is null');
@@ -40,23 +43,20 @@ describe('CreateUserController', () => {
   });
 
   it('Fails if a user is already logged in', async () => {
-    const userID = await TestMain.withLoggedOutViewer(async ({ cc }) => {
+    const env = new TestEnvironment();
+    const userID = await env.withLoggedOutViewer(async ({ cc }) => {
       const { user } = await CreateUserController.execute(cc, {
         displayName: 'Lola',
       });
       return await user.getID();
     });
-    await TestMain.withExistingUserAsViewer(userID, async ({ cc }) => {
-      let ex: Error | undefined;
-      try {
-        await CreateUserController.execute(cc, {
-          displayName: 'Erica',
-        });
-      } catch (e) {
-        if (e instanceof Error) {
-          ex = e;
-        }
-      }
+    await env.withExistingUserAsViewer(userID, async ({ cc }) => {
+      const ex = await testCatch(
+        async () =>
+          await CreateUserController.execute(cc, {
+            displayName: 'Erica',
+          }),
+      );
       expect(ex).toBeDefined();
     });
   });

@@ -26,7 +26,7 @@ export abstract class AidRequestSearchUseCase {
       throw new Error('You must be logged in to search');
     }
 
-    const queryBuilder = AidRequestSearchPlugin.get().create(cc);
+    const queryBuilder = AidRequestSearchPlugin.getImpl(cc).create(cc);
 
     if (user != null) {
       await queryBuilder.limitToRequestsUserHasPermissionToSee(user);

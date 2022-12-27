@@ -7,7 +7,7 @@ import {
 } from 'src/shared/presenter_utils/mentions/mention_utils';
 import { Part } from 'src/shared/presenter_utils/mentions/types';
 
-export class MentionsReplacerPlugin implements MentionsReplacerType {
+export class MentionsReplacerPluginImpl implements MentionsReplacerType {
   async updateStringWithMentionsUsingCurrentNames(
     originalString: string,
     getCurrentName: (id: string) => Promise<string>,

@@ -1,15 +1,11 @@
+import {
+  CC,
+  CCPluginDispatcher,
+} from 'src/server/context_container/public/ContextContainer';
 import { UserDBGatewayType } from 'src/server/entities/public/user/plugins/interfaces/UserDBGatewayType';
 
-let PLUGIN: UserDBGatewayType | undefined;
-
-export const UserDBGatewayPlugin = {
-  get(): UserDBGatewayType {
-    if (PLUGIN == null) {
-      throw new Error('UserDBGateway plugin not set');
-    }
-    return PLUGIN;
-  },
-  set(plugin: UserDBGatewayType): void {
-    PLUGIN = plugin;
+export const UserDBGatewayPlugin: CCPluginDispatcher<UserDBGatewayType> = {
+  getImpl(cc: CC): UserDBGatewayType {
+    return cc.getPlugin(UserDBGatewayPlugin);
   },
 };

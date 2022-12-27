@@ -14,9 +14,11 @@ import {
 import { TestID } from 'src/server/tests/application/mocks/TestID';
 
 export class TestAidRequestDBGateway implements AidRequestDBGatewayType {
+  public readonly db: TestAidRequestInMemoryDatabase =
+    new TestAidRequestInMemoryDatabase();
+
   async load(cc: CC, id: string): Promise<AidRequestDBProxy> {
-    const testAidRequestInMemoryDatabaseRow =
-      TestAidRequestInMemoryDatabase.get(id);
+    const testAidRequestInMemoryDatabaseRow = this.db.get(id);
     if (testAidRequestInMemoryDatabaseRow == null) {
       throw new Error(`AidRequest with id ${id} not found`);
     }
@@ -47,7 +49,7 @@ export class TestAidRequestDBGateway implements AidRequestDBGatewayType {
       whoRecordedItUserID,
     };
     const row = new TestAidRequestInMemoryDatabaseRow(properties);
-    TestAidRequestInMemoryDatabase.set(id, row);
+    this.db.set(id, row);
     const aidRequest = await AidRequest.load(cc, id);
     if (aidRequest == null) {
       throw new Error(

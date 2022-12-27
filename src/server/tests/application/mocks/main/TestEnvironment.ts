@@ -1,17 +1,20 @@
 import { CC } from 'src/server/context_container/public/ContextContainer';
+import { PluginCollection } from 'src/server/context_container/public/PluginCollection';
 import { CreateSharingGroupController } from 'src/server/controllers/sharing_group/create/CreateSharingGroupController';
 import { GetAllSharingGroupsController } from 'src/server/controllers/sharing_group/get/GetAllSharingGroupsController';
 import { CreateUserController } from 'src/server/controllers/user/create/CreateUserController';
+import { Viewer } from 'src/server/entities/entities_domain/viewer/Viewer';
 import { AuthenticatedUserID } from 'src/server/entities/public/user/AuthenticatedUserID';
+import { User } from 'src/server/entities/public/user/User';
 import { ViewerPublic } from 'src/server/entities/public/viewer/ViewerPublic';
 import { SharingGroupPresenter } from 'src/server/presenters/public/sharing_group/SharingGroupPresenter';
 import { UserPresenter } from 'src/server/presenters/public/user/UserPresenter';
 import { TestCC } from 'src/server/tests/application/cc/TestCC';
-import { initTestPlugins } from 'src/server/tests/application/mocks/plugins/initTestPlugins';
+import { createTestPlugins } from 'src/server/tests/application/mocks/plugins/createTestPlugins';
 
 type CreateUserArgs = Readonly<{
   displayNameForUser: string;
-  nameOfFirstSharingGroupForUser?: string;
+  namesOfSharingGroupsToCreateForUser?: string[];
 }>;
 
 type LoggedOutCallbackArgs = Readonly<{
@@ -21,10 +24,18 @@ type LoggedOutCallbackArgs = Readonly<{
 type LoggedInCallbackArgs = LoggedOutCallbackArgs &
   Readonly<{
     sharingGroupNameToID: (name: string) => string;
+    viewerID: string;
+    viewer: User;
   }>;
 
-export abstract class TestMain {
-  public static async withNewUserAsViewer<T>(
+export class TestEnvironment {
+  private plugins: PluginCollection;
+
+  public constructor() {
+    this.plugins = createTestPlugins();
+  }
+
+  public async withNewUserAsViewer<T>(
     args: CreateUserArgs,
     callback: (args: LoggedInCallbackArgs) => Promise<T>,
   ): Promise<T> {
@@ -32,7 +43,7 @@ export abstract class TestMain {
     return await this.withExistingUserAsViewer(userID, callback);
   }
 
-  public static async withExistingUserAsViewer<T>(
+  public async withExistingUserAsViewer<T>(
     userID: string,
     callback: (args: LoggedInCallbackArgs) => Promise<T>,
   ): Promise<T> {
@@ -40,12 +51,17 @@ export abstract class TestMain {
       userID,
       async ({ cc }: LoggedOutCallbackArgs) => {
         const sharingGroupNameToID = await this.getSharingGroupNameToID(cc);
-        return await callback({ cc, sharingGroupNameToID });
+        const viewer = Viewer.getUser(cc);
+        if (viewer == null) {
+          throw new Error('viewer is null');
+        }
+        const viewerID = await viewer.getID();
+        return await callback({ cc, sharingGroupNameToID, viewer, viewerID });
       },
     );
   }
 
-  public static async createUser(args: CreateUserArgs): Promise<
+  public async createUser(args: CreateUserArgs): Promise<
     Readonly<{
       userID: string;
       user: UserPresenter;
@@ -62,33 +78,34 @@ export abstract class TestMain {
       };
     });
 
-    const { nameOfFirstSharingGroupForUser } = args;
-    if (nameOfFirstSharingGroupForUser !== undefined) {
+    const { namesOfSharingGroupsToCreateForUser } = args;
+    if (namesOfSharingGroupsToCreateForUser !== undefined) {
       await this.withExistingUserAsViewer(userID, async ({ cc }) => {
-        await CreateSharingGroupController.execute(cc, {
-          displayName: nameOfFirstSharingGroupForUser,
-        });
+        for (const displayName of namesOfSharingGroupsToCreateForUser) {
+          await CreateSharingGroupController.execute(cc, {
+            displayName,
+          });
+        }
       });
     }
 
     return { user, userID };
   }
 
-  public static async withLoggedOutViewer<T>(
+  public async withLoggedOutViewer<T>(
     callback: (args: LoggedOutCallbackArgs) => Promise<T>,
   ): Promise<T> {
     return await this.withViewer(null, callback);
   }
 
-  private static async withViewer<T>(
+  private async withViewer<T>(
     userID: string | null,
     callback: (args: LoggedOutCallbackArgs) => Promise<T>,
   ): Promise<T> {
-    const cc = await TestCC.create();
-    initTestPlugins(cc);
+    const cc = await TestCC.create(this.plugins);
     await ViewerPublic.initializeViewerContext(
       cc,
-      new TestMainAuthenticatedID(userID),
+      new TestEnvironmentAuthenticatedID(userID),
     );
     try {
       return await callback({ cc });
@@ -97,7 +114,7 @@ export abstract class TestMain {
     }
   }
 
-  private static async getSharingGroupNameToID(
+  private async getSharingGroupNameToID(
     cc: CC,
   ): Promise<(name: string) => string> {
     const { sharingGroups } = await GetAllSharingGroupsController.execute(cc);
@@ -127,6 +144,6 @@ export abstract class TestMain {
   }
 }
 
-class TestMainAuthenticatedID implements AuthenticatedUserID {
+class TestEnvironmentAuthenticatedID implements AuthenticatedUserID {
   constructor(public readonly id: string | null) {}
 }

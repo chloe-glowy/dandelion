@@ -10,7 +10,7 @@ import { initViewerContextForExpress } from 'src/server/adapters/express/initVie
 import { initGraphQL } from 'src/server/adapters/graphql/GraphQLSchema';
 import { initMongoClient } from 'src/server/adapters/mongodb/client';
 import { initUserModels } from 'src/server/adapters/mongodb/collections/user/UserModel';
-import { initPlugins } from 'src/server/root/plugins/initPlugins';
+import { getMainPlugins } from 'src/server/root/plugins/getMainPlugins';
 import environmentIsUsingHotReloading from 'src/shared/to_clean/env/environmentIsUsingHotReloading';
 
 export function createExpressApp(): ReturnType<typeof express> {
@@ -26,8 +26,7 @@ export function createExpressApp(): ReturnType<typeof express> {
   app.use(bodyParser.json());
   app.use(bodyParser.urlencoded({ extended: true }));
 
-  initCCforExpress(app);
-  initPlugins();
+  initCCforExpress(app, getMainPlugins());
   initMongoClient();
   initUserModels(app);
   initViewerContextForExpress(app);

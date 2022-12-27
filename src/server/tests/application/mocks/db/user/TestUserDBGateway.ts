@@ -10,8 +10,10 @@ import { TestUserInMemoryDatabaseRow } from 'src/server/tests/application/mocks/
 import { TestID } from 'src/server/tests/application/mocks/TestID';
 
 export class TestUserDBGateway implements UserDBGatewayType {
+  public readonly db: TestUserInMemoryDatabase = new TestUserInMemoryDatabase();
+
   async load(id: string): Promise<UserDBProxy | null> {
-    const testUserInMemoryDatabaseRow = TestUserInMemoryDatabase.get(id);
+    const testUserInMemoryDatabaseRow = this.db.get(id);
     if (testUserInMemoryDatabaseRow == null) {
       return null;
     }
@@ -25,7 +27,7 @@ export class TestUserDBGateway implements UserDBGatewayType {
       id,
       sharingGroupIDs: [],
     });
-    TestUserInMemoryDatabase.set(id, row);
+    this.db.set(id, row);
 
     const user = await User.loadViewer(
       cc,

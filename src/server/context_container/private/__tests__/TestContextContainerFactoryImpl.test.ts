@@ -1,16 +1,12 @@
 import { ContextContainerFactoryImpl } from 'src/server/context_container/private/ContextContainerFactoryImpl';
+import { testCatch } from 'src/server/tests/application/helpers/testCatch';
 
 describe('ContextContainerFactoryImpl', () => {
-  it('Fails if an incorrect token is passed', () => {
+  it('Fails if an incorrect token is passed', async () => {
     const token = 3;
-    let ex: Error | undefined;
-    try {
+    const ex = await testCatch(async () => {
       ContextContainerFactoryImpl.assertConstructedByContextContainer(token);
-    } catch (e) {
-      if (e instanceof Error) {
-        ex = e;
-      }
-    }
+    });
     expect(ex).toBeDefined();
   });
 });
