@@ -60,4 +60,17 @@ describe('CreateUserController', () => {
       expect(ex).toBeDefined();
     });
   });
+
+  it('Fails if the viewer is the system', async () => {
+    const env = new TestEnvironment();
+    await env.withSystemAsViewer(async ({ cc }) => {
+      const exception = await testCatch(
+        async () =>
+          await CreateUserController.execute(cc, {
+            displayName: 'Lola',
+          }),
+      );
+      expect(exception).toBeDefined();
+    });
+  });
 });

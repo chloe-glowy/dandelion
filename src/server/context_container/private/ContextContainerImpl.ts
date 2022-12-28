@@ -17,11 +17,7 @@ export class ContextContainerImpl implements ContextContainer {
   ) {}
 
   getPlugin<TPlugin>(pluginDispatcher: CCPluginDispatcher<TPlugin>): TPlugin {
-    const plugin = this.plugins.get(pluginDispatcher);
-    if (plugin == null) {
-      throw new Error('Plugin not set');
-    }
-    return plugin;
+    return this.plugins.get(pluginDispatcher);
   }
 
   get<TContextModule extends ContextModule>(

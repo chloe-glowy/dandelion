@@ -31,8 +31,8 @@ type LoggedInCallbackArgs = LoggedOutCallbackArgs &
 export class TestEnvironment {
   private plugins: PluginCollection;
 
-  public constructor() {
-    this.plugins = createTestPlugins();
+  public constructor(plugins: PluginCollection | undefined = undefined) {
+    this.plugins = plugins ?? createTestPlugins();
   }
 
   public async withNewUserAsViewer<T>(
@@ -48,7 +48,7 @@ export class TestEnvironment {
     callback: (args: LoggedInCallbackArgs) => Promise<T>,
   ): Promise<T> {
     return await this.withViewer(
-      userID,
+      { isSystem: false, userID },
       async ({ cc }: LoggedOutCallbackArgs) => {
         const sharingGroupNameToID = await this.getSharingGroupNameToID(cc);
         const viewer = Viewer.getUser(cc);
@@ -92,20 +92,26 @@ export class TestEnvironment {
     return { user, userID };
   }
 
+  public async withSystemAsViewer<T>(
+    callback: (args: LoggedOutCallbackArgs) => Promise<T>,
+  ): Promise<T> {
+    return await this.withViewer({ isSystem: true, userID: null }, callback);
+  }
+
   public async withLoggedOutViewer<T>(
     callback: (args: LoggedOutCallbackArgs) => Promise<T>,
   ): Promise<T> {
-    return await this.withViewer(null, callback);
+    return await this.withViewer({ isSystem: false, userID: null }, callback);
   }
 
   private async withViewer<T>(
-    userID: string | null,
+    id: TestEnvironmentAuthenticatedIDArgs,
     callback: (args: LoggedOutCallbackArgs) => Promise<T>,
   ): Promise<T> {
     const cc = await TestCC.create(this.plugins);
     await ViewerPublic.initializeViewerContext(
       cc,
-      new TestEnvironmentAuthenticatedID(userID),
+      new TestEnvironmentAuthenticatedID(id),
     );
     try {
       return await callback({ cc });
@@ -144,6 +150,19 @@ export class TestEnvironment {
   }
 }
 
-class TestEnvironmentAuthenticatedID implements AuthenticatedUserID {
-  constructor(public readonly id: string | null) {}
+type TestEnvironmentAuthenticatedIDArgs = Readonly<{
+  userID: string | null;
+  isSystem: boolean;
+}>;
+
+export class TestEnvironmentAuthenticatedID implements AuthenticatedUserID {
+  constructor(private readonly args: TestEnvironmentAuthenticatedIDArgs) {}
+
+  get id(): string | null {
+    return this.args.userID;
+  }
+
+  get isSystem(): boolean {
+    return this.args.isSystem;
+  }
 }

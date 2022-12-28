@@ -42,4 +42,8 @@ export class TestUserDBGateway implements UserDBGatewayType {
 
 class TestUserDBGatewayAuthenticatedID implements AuthenticatedUserID {
   constructor(public readonly id: string | null) {}
+
+  get isSystem(): boolean {
+    return false;
+  }
 }

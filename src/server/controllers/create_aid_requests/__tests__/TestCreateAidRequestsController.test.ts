@@ -65,13 +65,12 @@ describe('CreateAidRequestsController', () => {
         namesOfSharingGroupsToCreateForUser: ['My Sharing Group'],
       },
       async ({ cc, sharingGroupNameToID }) => {
-        const [aidRequest] = (
-          await CreateAidRequestsController.execute(cc, {
-            sharingGroupID: sharingGroupNameToID('My Sharing Group'),
-            whatIsNeeded: ['a tomato'],
-            whoIsItFor: ['Keeley'],
-          })
-        ).aidRequests;
+        const response = await CreateAidRequestsController.execute(cc, {
+          sharingGroupID: sharingGroupNameToID('My Sharing Group'),
+          whatIsNeeded: ['a tomato'],
+          whoIsItFor: ['Keeley'],
+        });
+        const [aidRequest] = response.aidRequests;
         const userPresenter = await aidRequest.getWhoRecordedIt();
         expect(userPresenter).not.toBeNull();
         if (userPresenter == null) {
@@ -85,6 +84,10 @@ describe('CreateAidRequestsController', () => {
 
         const whoIsItFor = await aidRequest.getWhoIsItFor();
         expect(whoIsItFor).toBe('Keeley');
+
+        expect(response.postpublishSummary).toBe(
+          'Recorded a tomato for Keeley',
+        );
       },
     );
   });
@@ -115,6 +118,30 @@ describe('CreateAidRequestsController', () => {
     expect(exception?.message).toMatch(
       /Unable to load SharingGroup with id .+/,
     );
+  });
+
+  it('fails if the viewer is logged out', async () => {
+    const env = new TestEnvironment();
+    const sharingGroupID = await env.withNewUserAsViewer(
+      {
+        displayNameForUser: 'Veronica',
+        namesOfSharingGroupsToCreateForUser: ['My Sharing Group'],
+      },
+      async ({ sharingGroupNameToID }) => {
+        return sharingGroupNameToID('My Sharing Group');
+      },
+    );
+    await env.withLoggedOutViewer(async ({ cc }) => {
+      const exception = await testCatch(
+        async () =>
+          await CreateAidRequestsController.execute(cc, {
+            sharingGroupID,
+            whatIsNeeded: ['a tomato'],
+            whoIsItFor: ['Keeley'],
+          }),
+      );
+      expect(exception).toBeDefined();
+    });
   });
 
   it('fails if the user is not a member of the sharing group', async () => {
@@ -154,7 +181,63 @@ describe('CreateAidRequestsController', () => {
     );
   });
 
-  // it('Can create multiple aid requests at once for the same person')
+  it('Can create multiple aid requests at once for the same person', async () => {
+    const env = new TestEnvironment();
+    await env.withNewUserAsViewer(
+      {
+        displayNameForUser: 'Veronica',
+        namesOfSharingGroupsToCreateForUser: ['My Sharing Group'],
+      },
+      async ({ cc, sharingGroupNameToID }) => {
+        const response = await CreateAidRequestsController.execute(cc, {
+          sharingGroupID: sharingGroupNameToID('My Sharing Group'),
+          whatIsNeeded: ['a tomato', 'a two liter bottle of soda'],
+          whoIsItFor: ['Keeley'],
+        });
+        const [aidRequestA, aidRequestB] = response.aidRequests;
+
+        const whatIsNeededA = await aidRequestA.getWhatIsNeeded();
+        expect(whatIsNeededA).toBe('a tomato');
+
+        const whoIsItForA = await aidRequestA.getWhoIsItFor();
+        expect(whoIsItForA).toBe('Keeley');
+
+        expect(await aidRequestB.getWhatIsNeeded()).toBe(
+          'a two liter bottle of soda',
+        );
+        expect(await aidRequestB.getWhoIsItFor()).toBe('Keeley');
+
+        expect(response.postpublishSummary).toBe(
+          'Recorded 2 requests for Keeley',
+        );
+      },
+    );
+  });
+
+  it('includes the sharing group name in the postpublish summary if the user is in multiple sharing groups', async () => {
+    const env = new TestEnvironment();
+    await env.withNewUserAsViewer(
+      {
+        displayNameForUser: 'Veronica',
+        namesOfSharingGroupsToCreateForUser: [
+          'My Public Sharing Group',
+          'My Private Sharing Group',
+        ],
+      },
+      async ({ cc, sharingGroupNameToID }) => {
+        const response = await CreateAidRequestsController.execute(cc, {
+          sharingGroupID: sharingGroupNameToID('My Private Sharing Group'),
+          whatIsNeeded: ['a tomato'],
+          whoIsItFor: ['Keeley'],
+        });
+
+        expect(response.postpublishSummary).toBe(
+          'Recorded a tomato for Keeley (My Private Sharing Group)',
+        );
+      },
+    );
+  });
+
   // it('Can create multiple aid requests at once for different people')
   // it('Can create multiple aid requests of different items for different people')
   // Test the postpublish summary on the above tests

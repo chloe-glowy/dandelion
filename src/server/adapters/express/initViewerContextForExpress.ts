@@ -21,4 +21,8 @@ export function initViewerContextForExpress(app: Express): void {
 
 class AuthenticatedIDForExpressRequest {
   constructor(public readonly id: string | null) {}
+
+  get isSystem(): boolean {
+    return false;
+  }
 }

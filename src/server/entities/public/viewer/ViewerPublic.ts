@@ -2,6 +2,7 @@ import { CC } from 'src/server/context_container/public/ContextContainer';
 import { Viewer } from 'src/server/entities/entities_domain/viewer/Viewer';
 import {
   LoggedOutViewerContext,
+  SystemViewerContext,
   UserViewerContext,
   VC,
 } from 'src/server/entities/private/vc/ViewerContext';
@@ -13,9 +14,15 @@ export abstract class ViewerPublic {
     cc: CC,
     id: AuthenticatedUserID,
   ): Promise<void> {
-    const user = await User.loadViewer(cc, id);
-    const vc =
-      user == null ? new LoggedOutViewerContext() : new UserViewerContext(user);
+    const vc = await (async () => {
+      if (id.isSystem) {
+        return new SystemViewerContext();
+      }
+      const user = await User.loadViewer(cc, id);
+      return user == null
+        ? new LoggedOutViewerContext()
+        : new UserViewerContext(user);
+    })();
 
     cc.get(VC).setViewerContext(vc);
   }
