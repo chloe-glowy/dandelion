@@ -5,10 +5,10 @@ import { User } from 'src/server/entities/public/user/User';
 
 export const ViewerImpl: IViewer = {
   getIsSystem(cc: CC): boolean {
-    return cc.get(VC).vc.isSystem;
+    return cc.getSingleton(VC).vc.isSystem;
   },
 
   getUser(cc: CC): User | null {
-    return cc.get(VC).vc.user;
+    return cc.getSingleton(VC).vc.user;
   },
 };

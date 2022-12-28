@@ -21,7 +21,7 @@ export function initCCforExpress(
 ): void {
   app.use((req, _res, next) => {
     const cc = ContextContainerFactory.create(plugins);
-    cc.get(RequestTime).setRequestTime(new Date());
+    cc.getSingleton(RequestTime).setRequestTime(new Date());
     req.cc = cc;
     next();
   });

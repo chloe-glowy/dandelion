@@ -8,7 +8,11 @@ import { SharingGroupPrivacyPolicy } from 'src/server/entities/public/sharing_gr
 
 export class SharingGroup {
   public static async load(cc: CC, id: string): Promise<SharingGroup | null> {
-    const dbProxy = await SharingGroupDBGatewayPlugin.getImpl(cc).load(cc, id);
+    const dbProxy = await cc.memoize(
+      SharingGroup,
+      id,
+      async () => await cc.getPlugin(SharingGroupDBGatewayPlugin).load(cc, id),
+    );
     if (dbProxy == null) {
       return null;
     }

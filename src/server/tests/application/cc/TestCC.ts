@@ -11,7 +11,7 @@ export class TestCC {
     requestTime: Date | undefined = undefined,
   ): Promise<CC> {
     const cc = ContextContainerFactory.create(plugins);
-    cc.get(RequestTime).setRequestTime(requestTime ?? new Date());
+    cc.getSingleton(RequestTime).setRequestTime(requestTime ?? new Date());
     return cc;
   }
 }

@@ -1,4 +1,4 @@
-import { ContextModule } from 'src/server/context_container/public/ContextContainer';
+import { ContextualSingleton } from 'src/server/context_container/public/ContextContainer';
 import { User } from 'src/server/entities/public/user/User';
 
 export interface ViewerContext {
@@ -7,7 +7,7 @@ export interface ViewerContext {
   isSameUser(user: User | null): Promise<boolean>;
 }
 
-export class VC extends ContextModule {
+export class VC extends ContextualSingleton {
   private vc_: ViewerContext | undefined;
   private hasUnset = false;
 

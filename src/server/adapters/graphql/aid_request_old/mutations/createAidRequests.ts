@@ -36,7 +36,7 @@ async function createAidRequestsResolver(
   // TODO -- What is the best way for the GraphQL layer to conveniently
   // assert that the user is logged in?
   ViewerPublic.assertLoggedIn(req.cc, 'createAidRequests');
-  const { user } = req.cc.get(VC).vc;
+  const { user } = req.cc.getSingleton(VC).vc;
   if (user == null) {
     throw new Error('Expected user to be non-null');
   }

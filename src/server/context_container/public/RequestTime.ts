@@ -1,11 +1,11 @@
 import {
   CC,
-  ContextModule,
+  ContextualSingleton,
 } from 'src/server/context_container/public/ContextContainer';
 
-export class RequestTime extends ContextModule {
+export class RequestTime extends ContextualSingleton {
   public static get(cc: CC): Date {
-    return cc.get(this).timestamp;
+    return cc.getSingleton(this).timestamp;
   }
 
   private timestamp_: Date | undefined;

@@ -61,7 +61,7 @@ export class User {
   }
 
   public async getIsViewer(): Promise<boolean> {
-    const vc = this.cc.get(VC).vc;
+    const vc = this.cc.getSingleton(VC).vc;
     return await vc.isSameUser(this);
   }
 

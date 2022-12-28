@@ -10,6 +10,6 @@ export class UserCreateImpl {
     if (!hasPermission) {
       throw new Error('You do not have permission to create a user');
     }
-    return await UserDBGatewayPlugin.getImpl(cc).create(cc, args);
+    return await cc.getPlugin(UserDBGatewayPlugin).create(cc, args);
   }
 }

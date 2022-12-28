@@ -39,7 +39,7 @@ export class TestSharingGroupDBGateway implements SharingGroupDBGatewayType {
     // Add the creator as a member of the sharing group
     const creatorUserID = await creator.getID();
 
-    const userGateway = UserDBGatewayPlugin.getImpl(cc) as TestUserDBGateway;
+    const userGateway = cc.getPlugin(UserDBGatewayPlugin) as TestUserDBGateway;
     const userRow = userGateway.db.get(creatorUserID);
     if (userRow == null) {
       throw new Error('Failed to find user');

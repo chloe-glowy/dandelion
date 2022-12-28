@@ -17,24 +17,24 @@ const searchIndexName = getEnvironmentVariableAndThrowIfNotFound(
 
 const MAIN_PLUGINS = new PluginCollection([
   {
-    dispatcher: MentionsReplacerPlugin,
-    plugin: new MentionsReplacerPluginImpl(),
+    reference: MentionsReplacerPlugin,
+    implementation: new MentionsReplacerPluginImpl(),
   },
   {
-    dispatcher: SharingGroupDBGatewayPlugin,
-    plugin: new MongodbSharingGroupDBGateway(),
+    reference: SharingGroupDBGatewayPlugin,
+    implementation: new MongodbSharingGroupDBGateway(),
   },
   {
-    dispatcher: UserDBGatewayPlugin,
-    plugin: new MongodbUserDBGateway(),
+    reference: UserDBGatewayPlugin,
+    implementation: new MongodbUserDBGateway(),
   },
   {
-    dispatcher: AidRequestDBGatewayPlugin,
-    plugin: new MongodbAidRequestDBGateway(),
+    reference: AidRequestDBGatewayPlugin,
+    implementation: new MongodbAidRequestDBGateway(),
   },
   {
-    dispatcher: AidRequestSearchPlugin,
-    plugin: new MongodbAidRequestSearchPlugin(searchIndexName),
+    reference: AidRequestSearchPlugin,
+    implementation: new MongodbAidRequestSearchPlugin(searchIndexName),
   },
 ]);
 

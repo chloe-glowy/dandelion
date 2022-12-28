@@ -14,7 +14,11 @@ import { User } from 'src/server/entities/public/user/User';
 
 export class AidRequest {
   public static async load(cc: CC, id: string): Promise<AidRequest | null> {
-    const dbProxy = await AidRequestDBGatewayPlugin.getImpl(cc).load(cc, id);
+    const dbProxy = await cc.memoize(
+      AidRequest,
+      id,
+      async () => await cc.getPlugin(AidRequestDBGatewayPlugin).load(cc, id),
+    );
     if (dbProxy == null) {
       return null;
     }

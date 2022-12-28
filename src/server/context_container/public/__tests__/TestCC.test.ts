@@ -1,39 +1,34 @@
 import {
-  CC,
-  CCPluginDispatcher,
   ContextContainerFactory,
+  createPluginReference,
 } from 'src/server/context_container/public/ContextContainer';
 import { PluginCollection } from 'src/server/context_container/public/PluginCollection';
 
 describe('CC', () => {
   it('Gets the plugin that was set', () => {
-    const pluginDispatcher: CCPluginDispatcher<Plugin> = {
-      getImpl: (cc: CC) => cc.getPlugin(pluginDispatcher),
-    };
+    const pluginReference = createPluginReference<PluginType>();
     const cc = ContextContainerFactory.create(
       new PluginCollection([
         {
-          dispatcher: pluginDispatcher,
-          plugin: PluginImplA,
+          implementation: PluginImplA,
+          reference: pluginReference,
         },
       ]),
     );
-    expect(cc.getPlugin(pluginDispatcher)).toBe(PluginImplA);
+    expect(cc.getPlugin(pluginReference)).toBe(PluginImplA);
   });
 
   it('Fails to get plugin if not set', () => {
-    const pluginDispatcher: CCPluginDispatcher<Plugin> = {
-      getImpl: (cc: CC) => cc.getPlugin(pluginDispatcher),
-    };
+    const pluginReference = createPluginReference<PluginType>();
     const cc = ContextContainerFactory.create(new PluginCollection([]));
-    expect(() => cc.getPlugin(pluginDispatcher)).toThrow();
+    expect(() => cc.getPlugin(pluginReference)).toThrow();
   });
 });
 
-type Plugin = {
+type PluginType = {
   double(n: number): number;
 };
 
-const PluginImplA: Plugin = {
+const PluginImplA: PluginType = {
   double: (n: number) => n * 2,
 };

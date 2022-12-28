@@ -16,6 +16,6 @@ export class AidRequestCreateImpl {
     if (!hasPermission) {
       throw new Error('You do not have permission to create an aid request');
     }
-    return await AidRequestDBGatewayPlugin.getImpl(cc).create(cc, args);
+    return await cc.getPlugin(AidRequestDBGatewayPlugin).create(cc, args);
   }
 }

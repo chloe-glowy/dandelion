@@ -45,7 +45,11 @@ export abstract class UserLoader {
     if (id == null) {
       return null;
     }
-    const dbProxy = await UserDBGatewayPlugin.getImpl(cc).load(id);
+    const dbProxy = await cc.memoize(
+      UserLoader,
+      id ?? 'null',
+      async () => await cc.getPlugin(UserDBGatewayPlugin).load(id),
+    );
     if (dbProxy == null) {
       return null;
     }

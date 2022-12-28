@@ -39,7 +39,7 @@ describe('CreateAidRequestsController', () => {
     );
     await env1.withExistingUserAsViewer(userIdA, async ({ cc }) => {
       const db = (
-        AidRequestDBGatewayPlugin.getImpl(cc) as TestAidRequestDBGateway
+        cc.getPlugin(AidRequestDBGatewayPlugin) as TestAidRequestDBGateway
       ).db;
       expect(db.aidRequests.size).toBe(1);
       for (const aidRequest of db.aidRequests.values()) {
@@ -48,7 +48,7 @@ describe('CreateAidRequestsController', () => {
     });
     await env2.withExistingUserAsViewer(userIdB, async ({ cc }) => {
       const db = (
-        AidRequestDBGatewayPlugin.getImpl(cc) as TestAidRequestDBGateway
+        cc.getPlugin(AidRequestDBGatewayPlugin) as TestAidRequestDBGateway
       ).db;
       expect(db.aidRequests.size).toBe(1);
       for (const aidRequest of db.aidRequests.values()) {

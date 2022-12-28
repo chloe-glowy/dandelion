@@ -4,7 +4,7 @@ import { User } from 'src/server/entities/public/user/User';
 
 export const UserPrivacyPolicy = {
   async canSee(cc: CC, user: User): Promise<boolean> {
-    const vc = cc.get(VC).vc;
+    const vc = cc.getSingleton(VC).vc;
     const { user: viewer } = vc;
     if (viewer == null) {
       return vc.isSystem;

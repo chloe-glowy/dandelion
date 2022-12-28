@@ -10,14 +10,16 @@ describe('RequestTime', () => {
 
   it('throws if initialized twice', () => {
     const cc = ContextContainerFactory.create(new PluginCollection([]));
-    cc.get(RequestTime).setRequestTime(new Date());
-    expect(() => cc.get(RequestTime).setRequestTime(new Date())).toThrow();
+    cc.getSingleton(RequestTime).setRequestTime(new Date());
+    expect(() =>
+      cc.getSingleton(RequestTime).setRequestTime(new Date()),
+    ).toThrow();
   });
 
   it('returns the timestamp', () => {
     const cc = ContextContainerFactory.create(new PluginCollection([]));
     const timestamp = new Date('2020-01-01T00:00:00.000Z');
-    cc.get(RequestTime).setRequestTime(timestamp);
+    cc.getSingleton(RequestTime).setRequestTime(timestamp);
     expect(RequestTime.get(cc)).toBe(timestamp);
   });
 });

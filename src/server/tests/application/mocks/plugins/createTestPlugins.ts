@@ -11,20 +11,20 @@ import { TestUserDBGateway } from 'src/server/tests/application/mocks/db/user/Te
 export function createTestPlugins(): PluginCollection {
   return new PluginCollection([
     {
-      dispatcher: MentionsReplacerPlugin,
-      plugin: new MentionsReplacerPluginImpl(),
+      reference: MentionsReplacerPlugin,
+      implementation: new MentionsReplacerPluginImpl(),
     },
     {
-      dispatcher: SharingGroupDBGatewayPlugin,
-      plugin: new TestSharingGroupDBGateway(),
+      reference: SharingGroupDBGatewayPlugin,
+      implementation: new TestSharingGroupDBGateway(),
     },
     {
-      dispatcher: UserDBGatewayPlugin,
-      plugin: new TestUserDBGateway(),
+      reference: UserDBGatewayPlugin,
+      implementation: new TestUserDBGateway(),
     },
     {
-      dispatcher: AidRequestDBGatewayPlugin,
-      plugin: new TestAidRequestDBGateway(),
+      reference: AidRequestDBGatewayPlugin,
+      implementation: new TestAidRequestDBGateway(),
     },
   ]);
 }

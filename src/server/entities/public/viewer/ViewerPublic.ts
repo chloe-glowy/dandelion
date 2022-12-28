@@ -24,15 +24,15 @@ export abstract class ViewerPublic {
         : new UserViewerContext(user);
     })();
 
-    cc.get(VC).setViewerContext(vc);
+    cc.getSingleton(VC).setViewerContext(vc);
   }
 
   public static async unsetViewerContext(cc: CC): Promise<void> {
-    cc.get(VC).unsetViewerContext();
+    cc.getSingleton(VC).unsetViewerContext();
   }
 
   public static isLoggedIn(cc: CC): boolean {
-    return cc.get(VC).vc.user != null;
+    return cc.getSingleton(VC).vc.user != null;
   }
 
   public static assertLoggedIn(cc: CC, action: string): void {

@@ -4,7 +4,7 @@ import { AidRequest } from 'src/server/entities/public/aid_request/AidRequest';
 
 export const AidRequestPrivacyPolicy = {
   async canSee(cc: CC, aidRequest: AidRequest): Promise<boolean> {
-    const vc = cc.get(VC).vc;
+    const vc = cc.getSingleton(VC).vc;
     const { user } = vc;
     if (user == null) {
       return vc.isSystem;

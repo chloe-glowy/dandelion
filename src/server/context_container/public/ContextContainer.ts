@@ -1,50 +1,64 @@
-import { ContextContainerFactoryImpl } from 'src/server/context_container/private/ContextContainerFactoryImpl';
+import {
+  ContextContainerFactoryImpl,
+  ProofOfBeingCalledByContextContainer,
+} from 'src/server/context_container/private/ContextContainerFactoryImpl';
 import { PluginCollection } from 'src/server/context_container/public/PluginCollection';
 
 export interface IContextContainerFactory {
   create(plugins: PluginCollection): ContextContainer;
-  assertConstructedByContextContainer(token: number): void;
 }
 
 export const ContextContainerFactory: IContextContainerFactory =
   ContextContainerFactoryImpl;
 
-export interface CCPluginDispatcher<TPlugin> {
-  getImpl(cc: ContextContainer): TPlugin;
+export interface PluginReference<TPlugin> {
+  typeSpec(pluginType: TPlugin): never;
 }
 
-export class ContextModule {
+export function createPluginReference<T>(): PluginReference<T> {
+  return {
+    typeSpec(_pluginType: T): never {
+      throw new Error('Do not call this function');
+    },
+  };
+}
+
+/**
+ * A ContextualSingleton is a class that has at most one instance per ContextContainer.
+ * The first time you call getSingleton on a ContextContainer, it will create an instance
+ * of the class and store it in the ContextContainer. Subsequent calls to getSingleton
+ * will return the same instance.
+ *
+ * Do not override the constructor of a ContextualSingleton. Instead, if you need to
+ * initialize your singleton with some data, create an initialize method and
+ * call it after calling cc.get(YourSingletonClass), like this:
+ *
+ * const singleton = cc.get(YourSingletonClass);
+ * singleton.initialize(initializationParams);
+ * ...
+ * // Later, when you need to get data from the singleton:
+ * const data = singleton.getData();
+ *
+ * getData() should throw an exception if initialize() has not been called.
+ *
+ * See RequestTIme.ts for an example.
+ */
+export class ContextualSingleton {
   public constructor(proof: ProofOfBeingCalledByContextContainer) {
     proof;
   }
 }
 
-export class ProofOfBeingCalledByContextContainer {
-  // For some reason, if we were to change the argument list from
-  // `private token: number` to `token: number`, then the following code
-  // is okay:
-  // class Foo extends ContextModule {}
-  // new Foo(1);
-  // Because I guess Number has the same constructor signature as this class.
-  // But if we make it a private member variable, then the compiler realizes
-  // that the constructor signature is different, and it complains.
-
-  // The whole point of this class is to make it impossible to construct
-  // a ContextModule directly.
-  public constructor(private token: number) {
-    ContextContainerFactoryImpl.assertConstructedByContextContainer(this.token);
-  }
-}
-
-export type ContextModuleClass<T extends ContextModule> = new (
+export type SingletonClass<T extends ContextualSingleton> = new (
   token: ProofOfBeingCalledByContextContainer,
 ) => T;
 
 export interface ContextContainer {
-  getPlugin<TPlugin>(pluginDispatcher: CCPluginDispatcher<TPlugin>): TPlugin;
-  get<TContextModule extends ContextModule>(
-    contextModuleClass: ContextModuleClass<TContextModule>,
-  ): TContextModule;
+  getPlugin<TPlugin>(ref: PluginReference<TPlugin>): TPlugin;
+  getSingleton<TSingleton extends ContextualSingleton>(
+    singletonClass: SingletonClass<TSingleton>,
+  ): TSingleton;
+  memoize<T>(scope: unknown, key: string, fn: () => T): T;
 }
 
 export type CC = ContextContainer;

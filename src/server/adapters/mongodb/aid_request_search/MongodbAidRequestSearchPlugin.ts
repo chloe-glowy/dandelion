@@ -116,11 +116,13 @@ class MongodbAidRequestSearchBuilder implements AidRequestSearchBuilder {
   public async execute(): Promise<AidRequestSearchInteractorResult> {
     const { skipCount, resultCount } = this;
     if (skipCount === undefined) {
-      throw new Error('MongodbAidRequestSearchPlugin: skipCount is undefined');
+      throw new Error(
+        'MongodbAidRequestSearchimplementation: skipCount is undefined',
+      );
     }
     if (resultCount === undefined) {
       throw new Error(
-        'MongodbAidRequestSearchPlugin: resultCount is undefined',
+        'MongodbAidRequestSearchimplementation: resultCount is undefined',
       );
     }
 
