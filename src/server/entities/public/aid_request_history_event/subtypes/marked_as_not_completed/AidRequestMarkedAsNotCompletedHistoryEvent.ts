@@ -1,5 +1,8 @@
 import { CC } from 'src/server/context_container/public/ContextContainer';
-import { AidRequestHistoryEvent } from 'src/server/entities/public/aid_request_history_event/AidRequestHistoryEvent';
+import {
+  AidRequestHistoryEvent,
+  AidRequestHistoryEventSubtypeHandlers,
+} from 'src/server/entities/public/aid_request_history_event/AidRequestHistoryEvent';
 import { AidRequestMarkedAsNotCompletedHistoryEventDBProxy } from 'src/server/entities/public/aid_request_history_event/subtypes/marked_as_not_completed/AidRequestMarkedAsNotCompletedHistoryEventDBProxy';
 
 export class AidRequestMarkedAsNotCompletedHistoryEvent extends AidRequestHistoryEvent {
@@ -12,5 +15,11 @@ export class AidRequestMarkedAsNotCompletedHistoryEvent extends AidRequestHistor
 
   public async supportsUndo(): Promise<boolean> {
     return true;
+  }
+
+  public handleSubtype<T>(
+    handlers: AidRequestHistoryEventSubtypeHandlers<T>,
+  ): T {
+    return handlers.AidRequestMarkedAsNotCompletedHistoryEvent(this);
   }
 }

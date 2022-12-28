@@ -11,15 +11,6 @@ import { AidRequestEditPermissionPolicyForMarkedAsNotWorkingOnAction } from 'src
 import { AidRequestEditPermissionPolicyForMarkedAsWorkingOnAction } from 'src/server/entities/private/aid_request/mutations/edit/permission/subtypes/marked_as_working_on/AidRequestEditPermissionPolicyForMarkedAsWorkingOnAction';
 import { AidRequest } from 'src/server/entities/public/aid_request/AidRequest';
 import { AidRequestAction } from 'src/server/entities/public/aid_request_action/interface/AidRequestAction';
-import { AidRequestChangedWhatIsNeededAction } from 'src/server/entities/public/aid_request_action/subtypes/changed_what_is_needed/AidRequestChangedWhatIsNeededAction';
-import { AidRequestChangedWhoIsItForAction } from 'src/server/entities/public/aid_request_action/subtypes/changed_who_is_it_for/AidRequestChangedWhoIsItForAction';
-import { AidRequestCommentAction } from 'src/server/entities/public/aid_request_action/subtypes/comment/AidRequestCommentAction';
-import { AidRequestCreatedAction } from 'src/server/entities/public/aid_request_action/subtypes/created/AidRequestCreatedAction';
-import { AidRequestDeletedAction } from 'src/server/entities/public/aid_request_action/subtypes/deleted/AidRequestDeletedAction';
-import { AidRequestMarkedAsCompletedAction } from 'src/server/entities/public/aid_request_action/subtypes/marked_as_completed/AidRequestMarkedAsCompletedAction';
-import { AidRequestMarkedAsNotCompletedAction } from 'src/server/entities/public/aid_request_action/subtypes/marked_as_not_completed/AidRequestMarkedAsNotCompletedAction';
-import { AidRequestMarkedAsNotWorkingOnAction } from 'src/server/entities/public/aid_request_action/subtypes/marked_as_not_working_on/AidRequestMarkedAsNotWorkingOnAction';
-import { AidRequestMarkedAsWorkingOnAction } from 'src/server/entities/public/aid_request_action/subtypes/marked_as_working_on/AidRequestMarkedAsWorkingOnAction';
 import { User } from 'src/server/entities/public/user/User';
 
 export abstract class AidRequestEditPermissionPolicyForActionFactory {
@@ -29,89 +20,70 @@ export abstract class AidRequestEditPermissionPolicyForActionFactory {
     aidRequest: AidRequest,
     action: AidRequestAction,
   ): AidRequestEditPermissionPolicyForAction {
-    if (action instanceof AidRequestCommentAction) {
-      return new AidRequestEditPermissionPolicyForCommentAction(
-        cc,
-        user,
-        aidRequest,
-        action,
-      );
-    }
-
-    if (action instanceof AidRequestMarkedAsNotWorkingOnAction) {
-      return new AidRequestEditPermissionPolicyForMarkedAsNotWorkingOnAction(
-        cc,
-        user,
-        aidRequest,
-        action,
-      );
-    }
-
-    if (action instanceof AidRequestMarkedAsWorkingOnAction) {
-      return new AidRequestEditPermissionPolicyForMarkedAsWorkingOnAction(
-        cc,
-        user,
-        aidRequest,
-        action,
-      );
-    }
-
-    if (action instanceof AidRequestChangedWhatIsNeededAction) {
-      return new AidRequestEditPermissionPolicyForChangedWhatIsNeededAction(
-        cc,
-        user,
-        aidRequest,
-        action,
-      );
-    }
-
-    if (action instanceof AidRequestCreatedAction) {
-      return new AidRequestEditPermissionPolicyForCreatedAction(
-        cc,
-        user,
-        aidRequest,
-        action,
-      );
-    }
-
-    if (action instanceof AidRequestMarkedAsNotCompletedAction) {
-      return new AidRequestEditPermissionPolicyForMarkedAsNotCompletedAction(
-        cc,
-        user,
-        aidRequest,
-        action,
-      );
-    }
-
-    if (action instanceof AidRequestChangedWhoIsItForAction) {
-      return new AidRequestEditPermissionPolicyForChangedWhoIsItForAction(
-        cc,
-        user,
-        aidRequest,
-        action,
-      );
-    }
-
-    if (action instanceof AidRequestMarkedAsCompletedAction) {
-      return new AidRequestEditPermissionPolicyForMarkedAsCompletedAction(
-        cc,
-        user,
-        aidRequest,
-        action,
-      );
-    }
-
-    if (action instanceof AidRequestDeletedAction) {
-      return new AidRequestEditPermissionPolicyForDeletedAction(
-        cc,
-        user,
-        aidRequest,
-        action,
-      );
-    }
-
-    throw new Error(
-      'AidRequestEditPermissionPolicyForActionFactory -- Unrecognized event type',
-    );
+    return action.handleSubtype({
+      AidRequestChangedWhatIsNeededAction: () =>
+        new AidRequestEditPermissionPolicyForChangedWhatIsNeededAction(
+          cc,
+          user,
+          aidRequest,
+          action,
+        ),
+      AidRequestChangedWhoIsItForAction: () =>
+        new AidRequestEditPermissionPolicyForChangedWhoIsItForAction(
+          cc,
+          user,
+          aidRequest,
+          action,
+        ),
+      AidRequestCommentAction: () =>
+        new AidRequestEditPermissionPolicyForCommentAction(
+          cc,
+          user,
+          aidRequest,
+          action,
+        ),
+      AidRequestCreatedAction: () =>
+        new AidRequestEditPermissionPolicyForCreatedAction(
+          cc,
+          user,
+          aidRequest,
+          action,
+        ),
+      AidRequestDeletedAction: () =>
+        new AidRequestEditPermissionPolicyForDeletedAction(
+          cc,
+          user,
+          aidRequest,
+          action,
+        ),
+      AidRequestMarkedAsCompletedAction: () =>
+        new AidRequestEditPermissionPolicyForMarkedAsCompletedAction(
+          cc,
+          user,
+          aidRequest,
+          action,
+        ),
+      AidRequestMarkedAsNotCompletedAction: () =>
+        new AidRequestEditPermissionPolicyForMarkedAsNotCompletedAction(
+          cc,
+          user,
+          aidRequest,
+          action,
+        ),
+      AidRequestMarkedAsNotWorkingOnAction: () =>
+        new AidRequestEditPermissionPolicyForMarkedAsNotWorkingOnAction(
+          cc,
+          user,
+          aidRequest,
+          action,
+        ),
+      AidRequestMarkedAsWorkingOnAction: () =>
+        new AidRequestEditPermissionPolicyForMarkedAsWorkingOnAction(
+          cc,
+          user,
+          aidRequest,
+          action,
+        ),
+    });
   }
 }

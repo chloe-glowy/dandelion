@@ -1,4 +1,6 @@
 import { CC } from 'src/server/context_container/public/ContextContainer';
+import { AidRequestHistoryEvent } from 'src/server/entities/public/aid_request_history_event/AidRequestHistoryEvent';
+import { AidRequestChangedWhoIsItForHistoryEvent } from 'src/server/entities/public/aid_request_history_event/subtypes/changed_who_is_it_for/AidRequestChangedWhoIsItForHistoryEvent';
 import { AidRequestChangedWhoIsItForHistoryEventDBProxy } from 'src/server/entities/public/aid_request_history_event/subtypes/changed_who_is_it_for/AidRequestChangedWhoIsItForHistoryEventDBProxy';
 import {
   TestAidRequestHistoryEventDBProxy,
@@ -26,5 +28,9 @@ export class TestAidRequestChangedWhoIsItForHistoryEventDBProxy
 
   public async getNewValue(): Promise<string> {
     return this.privateProperties.newValue;
+  }
+
+  asAidRequestHistoryEvent(cc: CC): AidRequestHistoryEvent {
+    return new AidRequestChangedWhoIsItForHistoryEvent(cc, this);
   }
 }

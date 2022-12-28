@@ -1,8 +1,5 @@
 import { CC } from 'src/server/context_container/public/ContextContainer';
 import { AidRequestAction } from 'src/server/entities/public/aid_request_action/interface/AidRequestAction';
-import { AidRequestChangedWhatIsNeededAction } from 'src/server/entities/public/aid_request_action/subtypes/changed_what_is_needed/AidRequestChangedWhatIsNeededAction';
-import { AidRequestChangedWhoIsItForAction } from 'src/server/entities/public/aid_request_action/subtypes/changed_who_is_it_for/AidRequestChangedWhoIsItForAction';
-import { AidRequestCommentAction } from 'src/server/entities/public/aid_request_action/subtypes/comment/AidRequestCommentAction';
 import { EditAidRequestSummarizer } from 'src/server/presenters/public/aid_request/edit_summary/EditAidRequestSummarizer';
 import { EditAidRequestChangedWhatIsNeededSummarizer } from 'src/server/presenters/public/aid_request/edit_summary/subtypes/EditAidRequestChangedWhatIsNeededSummarizer';
 import { EditAidRequestChangedWhoIsItForSummarizer } from 'src/server/presenters/public/aid_request/edit_summary/subtypes/EditAidRequestChangedWhoIsItForSummarizer';
@@ -13,18 +10,49 @@ export abstract class EditAidRequestSummarizerFactory {
     cc: CC,
     action: AidRequestAction,
   ): Promise<EditAidRequestSummarizer> {
-    if (action instanceof AidRequestChangedWhatIsNeededAction) {
-      return new EditAidRequestChangedWhatIsNeededSummarizer(cc, action);
-    }
-    if (action instanceof AidRequestChangedWhoIsItForAction) {
-      return new EditAidRequestChangedWhoIsItForSummarizer(cc, action);
-    }
-    if (action instanceof AidRequestCommentAction) {
-      return new EditAidRequestCommentSummarizer(cc, action);
-    }
-    throw new Error(
-      'EditAidRequestSummarizerFactory -- Unhandled action type -- ' +
-        action.constructor.name,
-    );
+    return action.handleSubtype<EditAidRequestSummarizer>({
+      AidRequestChangedWhatIsNeededAction: (action) =>
+        new EditAidRequestChangedWhatIsNeededSummarizer(cc, action),
+      AidRequestChangedWhoIsItForAction: (action) =>
+        new EditAidRequestChangedWhoIsItForSummarizer(cc, action),
+      AidRequestCommentAction: (action) =>
+        new EditAidRequestCommentSummarizer(cc, action),
+      AidRequestCreatedAction: () => {
+        throw new Error(
+          'EditAidRequestSummarizerFactory -- Not Yet Implemented -- ' +
+            action.constructor.name,
+        );
+      },
+      AidRequestDeletedAction: () => {
+        throw new Error(
+          'EditAidRequestSummarizerFactory -- Not Yet Implemented -- ' +
+            action.constructor.name,
+        );
+      },
+      AidRequestMarkedAsCompletedAction: () => {
+        throw new Error(
+          'EditAidRequestSummarizerFactory -- Not Yet Implemented -- ' +
+            action.constructor.name,
+        );
+      },
+      AidRequestMarkedAsNotCompletedAction: () => {
+        throw new Error(
+          'EditAidRequestSummarizerFactory -- Not Yet Implemented -- ' +
+            action.constructor.name,
+        );
+      },
+      AidRequestMarkedAsNotWorkingOnAction: () => {
+        throw new Error(
+          'EditAidRequestSummarizerFactory -- Not Yet Implemented -- ' +
+            action.constructor.name,
+        );
+      },
+      AidRequestMarkedAsWorkingOnAction: () => {
+        throw new Error(
+          'EditAidRequestSummarizerFactory -- Not Yet Implemented -- ' +
+            action.constructor.name,
+        );
+      },
+    });
   }
 }

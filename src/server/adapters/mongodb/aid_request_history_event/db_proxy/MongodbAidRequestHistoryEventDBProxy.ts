@@ -1,9 +1,10 @@
 import { MongodbAidRequestHistoryEvent } from 'src/server/adapters/mongodb/aid_request/model/MongodbAidRequestModelTypes';
 import { CC } from 'src/server/context_container/public/ContextContainer';
+import { AidRequestHistoryEvent } from 'src/server/entities/public/aid_request_history_event/AidRequestHistoryEvent';
 import { AidRequestHistoryEventDBProxy } from 'src/server/entities/public/aid_request_history_event/plugins/interfaces/AidRequestHistoryEventDBProxy';
 import { User } from 'src/server/entities/public/user/User';
 
-export class MongodbAidRequestHistoryEventDBProxy
+export abstract class MongodbAidRequestHistoryEventDBProxy
   implements AidRequestHistoryEventDBProxy
 {
   constructor(
@@ -21,4 +22,6 @@ export class MongodbAidRequestHistoryEventDBProxy
     const actorID = this.event.actor.toString();
     return await User.load(this.cc, actorID);
   }
+
+  abstract asAidRequestHistoryEvent(cc: CC): AidRequestHistoryEvent;
 }

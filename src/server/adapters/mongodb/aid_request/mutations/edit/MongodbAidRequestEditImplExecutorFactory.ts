@@ -4,33 +4,55 @@ import { MongodbAidRequestChangedWhatIsNeededEditExecutor } from 'src/server/ada
 import { MongodbAidRequestChangedWhoIsItForEditExecutor } from 'src/server/adapters/mongodb/aid_request/mutations/edit/subtypes/MongodbAidRequestChangedWhoIsItForEditExecutor';
 import { MongodbAidRequestCommentEditExecutor } from 'src/server/adapters/mongodb/aid_request/mutations/edit/subtypes/MongodbAidRequestCommentEditExecutor';
 import { AidRequestAction } from 'src/server/entities/public/aid_request_action/interface/AidRequestAction';
-import { AidRequestChangedWhatIsNeededAction } from 'src/server/entities/public/aid_request_action/subtypes/changed_what_is_needed/AidRequestChangedWhatIsNeededAction';
-import { AidRequestChangedWhoIsItForAction } from 'src/server/entities/public/aid_request_action/subtypes/changed_who_is_it_for/AidRequestChangedWhoIsItForAction';
-import { AidRequestCommentAction } from 'src/server/entities/public/aid_request_action/subtypes/comment/AidRequestCommentAction';
 
 export abstract class MongodbAidRequestEditImplExecutorFactory {
   public static create(
     context: MongodbAidRequestEditExecutorContext,
     action: AidRequestAction,
   ): MongodbAidRequestEditImplExecutor {
-    if (action instanceof AidRequestChangedWhatIsNeededAction) {
-      return new MongodbAidRequestChangedWhatIsNeededEditExecutor(
-        context,
-        action,
-      );
-    }
-    if (action instanceof AidRequestChangedWhoIsItForAction) {
-      return new MongodbAidRequestChangedWhoIsItForEditExecutor(
-        context,
-        action,
-      );
-    }
-    if (action instanceof AidRequestCommentAction) {
-      return new MongodbAidRequestCommentEditExecutor(context, action);
-    }
-    throw new Error(
-      'MongodbAidRequestEditImplExecutorFactory -- Unhandled action type -- ' +
-        action.constructor.name,
-    );
+    return action.handleSubtype<MongodbAidRequestEditImplExecutor>({
+      AidRequestChangedWhatIsNeededAction: (action) =>
+        new MongodbAidRequestChangedWhatIsNeededEditExecutor(context, action),
+      AidRequestChangedWhoIsItForAction: (action) =>
+        new MongodbAidRequestChangedWhoIsItForEditExecutor(context, action),
+      AidRequestCommentAction: (action) =>
+        new MongodbAidRequestCommentEditExecutor(context, action),
+      AidRequestCreatedAction: () => {
+        throw new Error(
+          'MongodbAidRequestEditImplExecutorFactory -- Not Yet Implemented -- ' +
+            action.constructor.name,
+        );
+      },
+      AidRequestDeletedAction: () => {
+        throw new Error(
+          'MongodbAidRequestEditImplExecutorFactory -- Not Yet Implemented -- ' +
+            action.constructor.name,
+        );
+      },
+      AidRequestMarkedAsCompletedAction: () => {
+        throw new Error(
+          'MongodbAidRequestEditImplExecutorFactory -- Not Yet Implemented -- ' +
+            action.constructor.name,
+        );
+      },
+      AidRequestMarkedAsNotCompletedAction: () => {
+        throw new Error(
+          'MongodbAidRequestEditImplExecutorFactory -- Not Yet Implemented -- ' +
+            action.constructor.name,
+        );
+      },
+      AidRequestMarkedAsNotWorkingOnAction: () => {
+        throw new Error(
+          'MongodbAidRequestEditImplExecutorFactory -- Not Yet Implemented -- ' +
+            action.constructor.name,
+        );
+      },
+      AidRequestMarkedAsWorkingOnAction: () => {
+        throw new Error(
+          'MongodbAidRequestEditImplExecutorFactory -- Not Yet Implemented -- ' +
+            action.constructor.name,
+        );
+      },
+    });
   }
 }

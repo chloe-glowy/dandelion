@@ -6,7 +6,6 @@ import { AidRequestHistoryEvent } from 'src/server/entities/public/aid_request_h
 import { AidRequestCreatedHistoryEvent } from 'src/server/entities/public/aid_request_history_event/subtypes/created/AidRequestCreatedHistoryEvent';
 import { SharingGroup } from 'src/server/entities/public/sharing_group/SharingGroup';
 import { User } from 'src/server/entities/public/user/User';
-import { TestAidRequestHistoryEventFactory } from 'src/server/tests/application/mocks/db/aid_request/history_event/TestAidRequestHistoryEventFactory';
 import { TestAidRequestInMemoryDatabaseRow } from 'src/server/tests/application/mocks/db/aid_request/TestAidRequestInMemoryDatabaseRow';
 import filterNulls from 'src/shared/language_utils/filterNulls';
 
@@ -50,7 +49,7 @@ export class TestAidRequestDBProxy implements AidRequestDBProxy {
     ReadonlyArray<AidRequestHistoryEvent>
   > {
     return this.row.properties.history.map((event) =>
-      TestAidRequestHistoryEventFactory.create(this.cc, event),
+      event.asAidRequestHistoryEvent(this.cc),
     );
   }
 
@@ -68,7 +67,7 @@ export class TestAidRequestDBProxy implements AidRequestDBProxy {
     if (matching === undefined) {
       throw new Error(`No event with ID ${id} found`);
     }
-    return TestAidRequestHistoryEventFactory.create(this.cc, matching.event);
+    return matching.event.asAidRequestHistoryEvent(this.cc);
   }
 
   public async getLatestEvent(): Promise<AidRequestHistoryEvent> {
@@ -90,7 +89,7 @@ export class TestAidRequestDBProxy implements AidRequestDBProxy {
       }
       return latest;
     }, eventsAndTimes[0]);
-    return TestAidRequestHistoryEventFactory.create(this.cc, latest.event);
+    return latest.event.asAidRequestHistoryEvent(this.cc);
   }
 
   public async getDateCreated(): Promise<Date> {

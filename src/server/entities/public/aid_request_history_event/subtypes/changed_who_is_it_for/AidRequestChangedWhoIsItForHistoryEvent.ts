@@ -1,5 +1,8 @@
 import { CC } from 'src/server/context_container/public/ContextContainer';
-import { AidRequestHistoryEvent } from 'src/server/entities/public/aid_request_history_event/AidRequestHistoryEvent';
+import {
+  AidRequestHistoryEvent,
+  AidRequestHistoryEventSubtypeHandlers,
+} from 'src/server/entities/public/aid_request_history_event/AidRequestHistoryEvent';
 import { AidRequestChangedWhoIsItForHistoryEventDBProxy } from 'src/server/entities/public/aid_request_history_event/subtypes/changed_who_is_it_for/AidRequestChangedWhoIsItForHistoryEventDBProxy';
 
 export class AidRequestChangedWhoIsItForHistoryEvent extends AidRequestHistoryEvent {
@@ -20,5 +23,11 @@ export class AidRequestChangedWhoIsItForHistoryEvent extends AidRequestHistoryEv
 
   public async supportsUndo(): Promise<boolean> {
     return true;
+  }
+
+  public handleSubtype<T>(
+    handlers: AidRequestHistoryEventSubtypeHandlers<T>,
+  ): T {
+    return handlers.AidRequestChangedWhoIsItForHistoryEvent(this);
   }
 }

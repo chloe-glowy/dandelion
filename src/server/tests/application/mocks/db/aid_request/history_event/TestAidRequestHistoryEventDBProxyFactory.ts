@@ -1,13 +1,4 @@
 import { CC } from 'src/server/context_container/public/ContextContainer';
-import { AidRequestChangedWhatIsNeededAction } from 'src/server/entities/public/aid_request_action/subtypes/changed_what_is_needed/AidRequestChangedWhatIsNeededAction';
-import { AidRequestChangedWhoIsItForAction } from 'src/server/entities/public/aid_request_action/subtypes/changed_who_is_it_for/AidRequestChangedWhoIsItForAction';
-import { AidRequestCommentAction } from 'src/server/entities/public/aid_request_action/subtypes/comment/AidRequestCommentAction';
-import { AidRequestCreatedAction } from 'src/server/entities/public/aid_request_action/subtypes/created/AidRequestCreatedAction';
-import { AidRequestDeletedAction } from 'src/server/entities/public/aid_request_action/subtypes/deleted/AidRequestDeletedAction';
-import { AidRequestMarkedAsCompletedAction } from 'src/server/entities/public/aid_request_action/subtypes/marked_as_completed/AidRequestMarkedAsCompletedAction';
-import { AidRequestMarkedAsNotCompletedAction } from 'src/server/entities/public/aid_request_action/subtypes/marked_as_not_completed/AidRequestMarkedAsNotCompletedAction';
-import { AidRequestMarkedAsNotWorkingOnAction } from 'src/server/entities/public/aid_request_action/subtypes/marked_as_not_working_on/AidRequestMarkedAsNotWorkingOnAction';
-import { AidRequestMarkedAsWorkingOnAction } from 'src/server/entities/public/aid_request_action/subtypes/marked_as_working_on/AidRequestMarkedAsWorkingOnAction';
 import { AidRequestActionWithContext } from 'src/server/entities/public/aid_request_action_with_context/AidRequestActionWithContext';
 import { AidRequestHistoryEventDBProxy } from 'src/server/entities/public/aid_request_history_event/plugins/interfaces/AidRequestHistoryEventDBProxy';
 import { TestAidRequestChangedWhatIsNeededHistoryEventDBProxy } from 'src/server/tests/application/mocks/db/aid_request/history_event/subtypes/changed_what_is_needed/TestAidRequestChangedWhatIsNeededHistoryEventDBProxy';
@@ -35,53 +26,47 @@ export abstract class TestAidRequestHistoryEventDBProxyFactory {
         timestamp,
       };
 
-    if (action instanceof AidRequestChangedWhatIsNeededAction) {
-      return new TestAidRequestChangedWhatIsNeededHistoryEventDBProxy(
-        cc,
-        sharedProperties,
-        { newValue: action.newValue, oldValue: action.oldValue },
-      );
-    } else if (action instanceof AidRequestChangedWhoIsItForAction) {
-      return new TestAidRequestChangedWhoIsItForHistoryEventDBProxy(
-        cc,
-        sharedProperties,
-        { newValue: action.newValue, oldValue: action.oldValue },
-      );
-    } else if (action instanceof AidRequestCommentAction) {
-      return new TestAidRequestCommentHistoryEventDBProxy(
-        cc,
-        sharedProperties,
-        { rawCommentContents: action.commentValue },
-      );
-    } else if (action instanceof AidRequestCreatedAction) {
-      return new TestAidRequestCreatedHistoryEventDBProxy(cc, sharedProperties);
-    } else if (action instanceof AidRequestDeletedAction) {
-      return new TestAidRequestDeletedHistoryEventDBProxy(cc, sharedProperties);
-    } else if (action instanceof AidRequestMarkedAsCompletedAction) {
-      return new TestAidRequestMarkedAsCompletedHistoryEventDBProxy(
-        cc,
-        sharedProperties,
-      );
-    } else if (action instanceof AidRequestMarkedAsNotCompletedAction) {
-      return new TestAidRequestMarkedAsNotCompletedHistoryEventDBProxy(
-        cc,
-        sharedProperties,
-      );
-    } else if (action instanceof AidRequestMarkedAsNotWorkingOnAction) {
-      return new TestAidRequestMarkedAsNotWorkingOnHistoryEventDBProxy(
-        cc,
-        sharedProperties,
-      );
-    } else if (action instanceof AidRequestMarkedAsWorkingOnAction) {
-      return new TestAidRequestMarkedAsWorkingOnHistoryEventDBProxy(
-        cc,
-        sharedProperties,
-      );
-    } else {
-      throw new Error(
-        'TestAidRequestDBGateway -- Unknown action type: ' +
-          action.constructor.name,
-      );
-    }
+    return action.handleSubtype<AidRequestHistoryEventDBProxy>({
+      AidRequestChangedWhatIsNeededAction: (action) =>
+        new TestAidRequestChangedWhatIsNeededHistoryEventDBProxy(
+          cc,
+          sharedProperties,
+          { newValue: action.newValue, oldValue: action.oldValue },
+        ),
+      AidRequestChangedWhoIsItForAction: (action) =>
+        new TestAidRequestChangedWhoIsItForHistoryEventDBProxy(
+          cc,
+          sharedProperties,
+          { newValue: action.newValue, oldValue: action.oldValue },
+        ),
+      AidRequestCommentAction: (action) =>
+        new TestAidRequestCommentHistoryEventDBProxy(cc, sharedProperties, {
+          rawCommentContents: action.commentValue,
+        }),
+      AidRequestCreatedAction: (_action) =>
+        new TestAidRequestCreatedHistoryEventDBProxy(cc, sharedProperties),
+      AidRequestDeletedAction: (_action) =>
+        new TestAidRequestDeletedHistoryEventDBProxy(cc, sharedProperties),
+      AidRequestMarkedAsCompletedAction: (_action) =>
+        new TestAidRequestMarkedAsCompletedHistoryEventDBProxy(
+          cc,
+          sharedProperties,
+        ),
+      AidRequestMarkedAsNotCompletedAction: (_action) =>
+        new TestAidRequestMarkedAsNotCompletedHistoryEventDBProxy(
+          cc,
+          sharedProperties,
+        ),
+      AidRequestMarkedAsNotWorkingOnAction: (_action) =>
+        new TestAidRequestMarkedAsNotWorkingOnHistoryEventDBProxy(
+          cc,
+          sharedProperties,
+        ),
+      AidRequestMarkedAsWorkingOnAction: (_action) =>
+        new TestAidRequestMarkedAsWorkingOnHistoryEventDBProxy(
+          cc,
+          sharedProperties,
+        ),
+    });
   }
 }
