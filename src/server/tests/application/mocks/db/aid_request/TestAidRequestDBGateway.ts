@@ -40,7 +40,7 @@ export class TestAidRequestDBGateway implements AidRequestDBGatewayType {
     ]);
     const properties: TestAidRequestInMemoryDatabaseRowProperties = {
       completed: args.completed,
-      history,
+      history: [...history],
       id,
       sharingGroupID,
       whatIsNeeded: args.whatIsNeeded,

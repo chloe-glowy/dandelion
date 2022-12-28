@@ -2,7 +2,7 @@ import { AidRequestHistoryEventDBProxy } from 'src/server/entities/public/aid_re
 
 export type TestAidRequestInMemoryDatabaseRowProperties = {
   completed: boolean;
-  history: ReadonlyArray<AidRequestHistoryEventDBProxy>;
+  history: Array<AidRequestHistoryEventDBProxy>;
   readonly id: string;
   sharingGroupID: string;
   whatIsNeeded: string;

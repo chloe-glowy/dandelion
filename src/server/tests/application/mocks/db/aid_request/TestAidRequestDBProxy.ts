@@ -6,6 +6,7 @@ import { AidRequestHistoryEvent } from 'src/server/entities/public/aid_request_h
 import { AidRequestCreatedHistoryEvent } from 'src/server/entities/public/aid_request_history_event/subtypes/created/AidRequestCreatedHistoryEvent';
 import { SharingGroup } from 'src/server/entities/public/sharing_group/SharingGroup';
 import { User } from 'src/server/entities/public/user/User';
+import { TestAidRequestEditImpl } from 'src/server/tests/application/mocks/db/aid_request/mutations/edit/TestAidRequestEditImpl';
 import { TestAidRequestInMemoryDatabaseRow } from 'src/server/tests/application/mocks/db/aid_request/TestAidRequestInMemoryDatabaseRow';
 import filterNulls from 'src/shared/language_utils/filterNulls';
 
@@ -118,10 +119,19 @@ export class TestAidRequestDBProxy implements AidRequestDBProxy {
   }
 
   public async edit(
-    _action: AidRequestAction,
-    _actor: User,
+    action: AidRequestAction,
+    actor: User,
   ): Promise<AidRequestEditResponse> {
-    throw new Error('Not yet implemented');
+    const { historyEventIDForUndo } = await TestAidRequestEditImpl.exec(
+      this.cc,
+      this,
+      action,
+      actor,
+      this.row,
+    );
+    return {
+      historyEventIDForUndo,
+    };
   }
 
   public async undo(_historyEventID: string, _actor: User): Promise<void> {
